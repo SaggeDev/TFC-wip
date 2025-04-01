@@ -12,6 +12,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+    //? Esta página carga las vistas de Resources/js/pages como metatexto para usarlas cuando sea necesario
 });
 
 Route::get('/dashboard', function () {
