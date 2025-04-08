@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail//Vamos a implement
      *
      * @var list<string>
      */
-    protected $fillable = [
+    protected $fillable = [//TODO: Parte de roles
         'name',
         'email',
         'password',
