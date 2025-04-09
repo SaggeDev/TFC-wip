@@ -13,6 +13,9 @@ class ProjectController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
+        $projects=Project::query()//Hago una query en proyectos
+            ->paginate(10)//Que me devuelva páginas de 10 resultados cada una
+            ->onEachPage(1);
         return Inertia::render('Project/Index', []);
     }
 
