@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    //Simplemente busca el usuario que ha hecho la request
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
