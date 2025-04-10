@@ -24,8 +24,9 @@ class ProjectResource extends JsonResource
                 'status'=>$this->status,
                 'image'=>$this->image,
                 'project_link'=>$this->project_link,
-                'createdBy'=>$this->createdBy,
-                'updatedBy'=>$this->updatedBy,
+                'createdBy'=>new UserResource($this->createdBy),//? Esta linea devuelve(en vez de la clave en si) el nombre de usuario, pasando por la tabla usuario.
+                'updatedBy'=>new UserResource($this->updatedBy)//? Tecnicamente está configurado para que devuelva más parámetros
+                //^Estoy llamando a los metodos dentro de userResource, no a los campos
             ];
     }
 }

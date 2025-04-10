@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Resources\ProjectResource;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -12,11 +13,19 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(){
+    public function index(){//Si en web.php llamamos a este constructor sin especificar el método, se ejecuta automáticamente el index. Oportunidad perfecta para poner un router de react con inertia
+        
         $projects=Project::query()//Hago una query en proyectos
-            ->paginate(10)//Que me devuelva páginas de 10 resultados cada una
-            ->onEachPage(1);
-        return Inertia::render('Project/Index', []);
+            ->paginate(10)//Que me devuelva páginas de 10 resultados 
+            ->onEachSide(1);//Por página
+        //^ Esta linea hace lo siguiente:
+        // 1. Busca los resultados y crea un JSON
+        // 2. Separa los resultados por cantidades de 10
+        // 3. Añade al json datos como el siguiente y anterior índice y algunas cosas más para que podamos interactuar con esto o(Lo más interesante) mandar a crear un paginador prefabricado
+        //! El problema con esto es que inertia envia los datos al arie libre, por lo que lleva a fallas de seguridad si no creamos un userResource que controler lo que se puede sacar y lo que no
+        return Inertia::render('Project/Index', [
+            "projects"=>ProjectResource::collection($projects),
+        ]);
     }
 
     /**
