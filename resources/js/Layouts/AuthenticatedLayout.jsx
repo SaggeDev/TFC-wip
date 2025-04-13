@@ -13,14 +13,14 @@ export default function AuthenticatedLayout({ header, children }) {
         useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-blue-800">
+        <div className="min-h-screen bg-gray-200 dark:bg-gray-900">
+            <nav className="border-b border-gray-200 bg-gray-50 shadow-sm dark:border-gray-700 dark:bg-blue-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-blue-700 bg-white rounded-md dark:text-gray-100 dark:bg-blue-800" />
+                                    <ApplicationLogo className="block h-9 w-auto fill-current text-blue-700 bg-gray-100 rounded-md dark:text-gray-100 dark:bg-blue-800" />
                                 </Link>
                             </div>
 
@@ -182,8 +182,8 @@ export default function AuthenticatedLayout({ header, children }) {
             </nav>
 
             {header && (
-                <header className="bg-white shadow-sm  dark:shadow dark:bg-blue-900">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <header className="bg-white shadow-sm  dark:shadow  dark:bg-blue-900">
+                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 ">
                         {header}
                     </div>
                 </header>

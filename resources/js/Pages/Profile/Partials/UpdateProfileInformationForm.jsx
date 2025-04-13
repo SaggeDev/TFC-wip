@@ -93,7 +93,7 @@ export default function UpdateProfileInformation({
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing} className='bg-blue-600 dark:bg-blue-600 dark:text-white'>Save</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -102,7 +102,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-blue-600 dark:text-blue-400">
                             Saved.
                         </p>
                     </Transition>

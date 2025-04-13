@@ -16,7 +16,7 @@ class ProjectController extends Controller
     public function index(){//Si en web.php llamamos a este constructor sin especificar el método, se ejecuta automáticamente el index. Oportunidad perfecta para poner un router de react con inertia
         
         $projects=Project::query()//Hago una query en proyectos
-            ->paginate(10)//Que me devuelva páginas de 10 resultados 
+            ->paginate(10)//Que me devuelva colecciones de 10 resultados 
             ->onEachSide(1);//Por página
         //^ Esta linea hace lo siguiente:
         // 1. Busca los resultados y crea un JSON
