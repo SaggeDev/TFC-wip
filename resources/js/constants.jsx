@@ -1,7 +1,7 @@
 export const PROJECT_STATUS_CLASS_MAP = {
-  pending: " bg-red-600",
-  in_progress: " bg-blue-500",
-  completed: " bg-green-500",
+  pending: "bg-red-600 dark:bg-red-700",
+  in_progress: " bg-blue-500 dark:bg-blue-600",
+  completed: " bg-green-500 dark:bg-green-600",
 };
 export const PROJECT_STATUS_TEXT_MAP = {
   pending: "Pending",

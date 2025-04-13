@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
-import { PROJECT_STATUS_TEXT_MAP, PROJECT_STATUS_CLASS_MAP } from "@/constants.js";
+import { PROJECT_STATUS_TEXT_MAP, PROJECT_STATUS_CLASS_MAP } from "@/constants.jsx";
 export default function Index({ projects }) {//Cada que llame a este componente, voy a tener que mandarle la lista de proyectos
     return (
         <AuthenticatedLayout //Este componente solo se muestra si el que lo solicita es un usuario real y logueado
