@@ -3,9 +3,11 @@ import '../css/app.css';
 
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
+import  "@/i18n/manager.jsx"
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Nombre Substituto';//??Aqui se define el nombre de la página que los componentes van a usar y donde se define en caso de no encontrarlo
+
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,//Cargará esto como el título

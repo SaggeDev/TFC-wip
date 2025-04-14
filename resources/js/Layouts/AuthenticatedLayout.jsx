@@ -3,16 +3,29 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n/manager';
 
 export default function AuthenticatedLayout({ header, children }) {
+    //*Para la Autentificación
     const user = usePage().props.auth.user;
     //Simplemente busca el usuario que ha hecho la request y comprueba que pueda verla(Tema de roles)
-
+    //*Para el menú que desciende
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+    //*Para el idioma
+    const [lang, setLang] = useState('es');
+    useEffect(() => {
+        i18n.changeLanguage(lang);
+    }, [lang]);
 
+    const { t } = useTranslation();
+
+    //*La página
     return (
+
         <div className="min-h-screen bg-gray-200 dark:bg-gray-900">
             <nav className="border-b border-gray-200 bg-gray-50 shadow-sm dark:border-gray-700 dark:bg-blue-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -49,9 +62,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Users
                                 </NavLink>
+
                             </div>
                         </div>
+                        <select onChange={(e) => setLang(e.target.value)} value={lang}>
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                        </select>
 
+                        <h1>{t('welcome')}</h1>
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>
@@ -138,7 +157,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div >
 
                 <div
                     className={
@@ -166,6 +185,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
+
                             <ResponsiveNavLink href={route('profile.edit')}>
                                 Profile
                             </ResponsiveNavLink>
@@ -179,7 +199,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
                     </div>
                 </div>
-            </nav>
+            </nav >
 
             {header && (
                 <header className="bg-white shadow-sm  dark:shadow  dark:bg-blue-900">
@@ -187,10 +207,11 @@ export default function AuthenticatedLayout({ header, children }) {
                         {header}
                     </div>
                 </header>
-            )}
+            )
+            }
 
             <main>{children}</main>
             {/* //^Aqui va el contenido de la página */}
-        </div>
+        </div >
     );
 }
