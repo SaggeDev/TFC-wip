@@ -4,9 +4,9 @@ export const PROJECT_STATUS_CLASS_MAP = {
   completed: " bg-green-500 dark:bg-green-600",
 };
 export const PROJECT_STATUS_TEXT_MAP = {
-  pending: "Pending",
-  in_progress: "In Progress",
-  completed: "Completed",
+  pending: "Pendiente",
+  in_progress: "En progreso",
+  completed: "Completado",
 };
 export const TASK_STATUS_CLASS_MAP = {
   pending: " bg-amber-500",

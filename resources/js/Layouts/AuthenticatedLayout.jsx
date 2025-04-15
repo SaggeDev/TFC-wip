@@ -5,8 +5,8 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import i18n from '@/i18n/manager';
+// import { useTranslation } from 'react-i18next';
+// import i18n from '@/i18n/manager';
 
 export default function AuthenticatedLayout({ header, children }) {
     //*Para la Autentificación
@@ -15,13 +15,13 @@ export default function AuthenticatedLayout({ header, children }) {
     //*Para el menú que desciende
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-    //*Para el idioma
-    const [lang, setLang] = useState('es');
-    useEffect(() => {
-        i18n.changeLanguage(lang);
-    }, [lang]);
+    // Para el idioma
+    // const [lang, setLang] = useState('es');
+    // useEffect(() => {
+    //     i18n.changeLanguage(lang);
+    // }, [lang]);
 
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
 
     //*La página
     return (
@@ -42,35 +42,32 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
                                 >
-                                    Dashboard
+                                    Panel de control
                                 </NavLink>
                                 <NavLink
                                     href={route('project.index')}
                                     active={route().current('project.index')}
                                 >
-                                    Projects
+                                    Proyectos
                                 </NavLink>
                                 <NavLink
                                     href={route('task.index')}
                                     active={route().current('task.index')}
                                 >
-                                    All Tasks
+                                    Tareas
                                 </NavLink>
                                 <NavLink
                                     href={route('user.index')}
                                     active={route().current('user.index')}
                                 >
-                                    Users
+                                    Usuarios
                                 </NavLink>
 
                             </div>
                         </div>
-                        <select onChange={(e) => setLang(e.target.value)} value={lang}>
-                            <option value="en">English</option>
-                            <option value="es">Español</option>
-                        </select>
+                       
 
-                        <h1>{t('welcome')}</h1>
+                        
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>
@@ -102,14 +99,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
-                                            Profile
+                                            Perfil
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            Cerrar sesión
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -187,14 +184,14 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="mt-3 space-y-1">
 
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
+                                Perfil
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
                                 as="button"
                             >
-                                Log Out
+                                Cerrar sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>

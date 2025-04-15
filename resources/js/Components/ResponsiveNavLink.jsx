@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 
-export default function ResponsiveNavLink({
+export default function zResponsiveNavLink({
     active = false,
     className = '',
     children,

@@ -1,3 +1,11 @@
 {
-  "welcome":"bienvenido"
+  "Dashboard": "Panel de control",
+  "Projects": "Proyectos",
+  "Tasks": "Tareas",
+  "Users": "Usuarios",
+  "English": "Inglés",
+  "Español": "Español",
+  "welcome": "bienvenido",
+  "Profile": "Perfil",
+  "Log Out": "Cerrar sesión"
 }

@@ -7,7 +7,7 @@ export default function Index({ projects }) {//Cada que llame a este componente,
         <AuthenticatedLayout //Este componente solo se muestra si el que lo solicita es un usuario real y logueado
             header={
                 <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
-                    Projects
+                    Proyectos
                 </h2>
             }
         >
@@ -26,13 +26,13 @@ export default function Index({ projects }) {//Cada que llame a este componente,
                                     <tr className="text-nowrap">
                                         {/* <th className="p-4">ID</th> */}
                                         <th className="p-3"></th> {/*Imagen*/}
-                                        <th className="p-3">Index</th>
-                                        <th className="p-3">Name</th>
-                                        <th className="p-3">Status</th>
-                                        <th className="p-3">Creation Date</th>
-                                        <th className="p-3">Due date</th>
-                                        <th className="p-3">Created by</th>
-                                        <th className="p-3">Actions</th>
+                                        <th className="p-3">ID</th>
+                                        <th className="p-3">Nombre</th>
+                                        <th className="p-3">Estado</th>
+                                        <th className="p-3">Fecha de creación</th>
+                                        <th className="p-3">Fecha límite</th>
+                                        <th className="p-3">Creador</th>
+                                        <th className="p-3 text-center">Aciones</th>
                                     </tr>
                                 </thead>
                                 {/*Fin menu/índice de tabla */}
@@ -56,9 +56,9 @@ export default function Index({ projects }) {//Cada que llame a este componente,
                                                 <td className="px-3 py-2">{project.created_at}</td>
                                                 <td className="px-3 py-2">{project.due_date}</td>
                                                 <td className="px-3 py-2">{project.createdBy.name}</td>
-                                                <td className="px-3 py-2">
+                                                <td className="px-3 py-2 text-center">
                                                     <Link href={route('project.edit', project.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
-                                                        Edit
+                                                        Editar
                                                     </Link>
                                                 </td>
                                                 {/* //^Parte de Actions */}
