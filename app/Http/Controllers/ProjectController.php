@@ -11,20 +11,42 @@ use Inertia\Inertia;
 class ProjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource.'
      */
-    public function index(){//Si en web.php llamamos a este constructor sin especificar el método, se ejecuta automáticamente el index. Oportunidad perfecta para poner un router de react con inertia
+    
+    public function index()//Si en web.php llamamos a este constructor sin especificar el método, se ejecuta automáticamente el index. Oportunidad perfecta para poner un router de react con inertia
+    {
+        $query = Project::query();
+
+        $sortField = request("sort_field", 'id');
+        $sortDirection = request("sort_direction", "asc");
+        //^Para el orden de registros
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
         
-        $projects=Project::query()//Hago una query en proyectos
-            ->paginate(10)//Que me devuelva colecciones de 10 resultados 
-            ->onEachSide(1);//Por página
+        if (request('created_by')) {
+            $query->whereHas('createdBy', function ($q): void {
+                $q->where('name','like',  '%' . request('created_by') . '%');
+            });
+        }
+
+        $projects = $query->orderBy($sortField, $sortDirection)
+            ->paginate(10)
+            ->onEachSide(1);
         //^ Esta linea hace lo siguiente:
         // 1. Busca los resultados y crea un JSON
         // 2. Separa los resultados por cantidades de 10
         // 3. Añade al json datos como el siguiente y anterior índice y algunas cosas más para que podamos interactuar con esto o(Lo más interesante) mandar a crear un paginador prefabricado
         //! El problema con esto es que inertia envia los datos al arie libre, por lo que lleva a fallas de seguridad si no creamos un userResource que controler lo que se puede sacar y lo que no
-        return Inertia::render('Project/Index', [
-            "projects"=>ProjectResource::collection($projects),
+        return inertia("Project/Index", [
+            "projects" => ProjectResource::collection($projects),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
         ]);
     }
 
