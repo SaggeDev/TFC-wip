@@ -29,4 +29,5 @@ class ProjectResource extends JsonResource
                 //^Estoy llamando a los metodos dentro de userResource, no a los campos
             ];
     }
+    
 }

@@ -10,14 +10,14 @@ const appName = import.meta.env.VITE_APP_NAME || 'Nombre Substituto';//??Aqui se
 
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,//Cargará esto como el título
+    title: (title) => `${appName} - ${title}`,//Cargará esto como el título
     //Y esto como los contenidos
     resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`,//La página principal
          import.meta.glob('./Pages/**/*.jsx')),//Los recursos que usará posteriormente
     setup({ el, App, props }) {
         const root = createRoot(el);//Crea un elemento de html root
 
-        root.render(<App {...props} />);// y lo usa para renderizar todo
+        root.render(<App {...props} />);// que usa para renderizar todo
     },
     progress: {//Color de barra de probreso arriba cuando pasa de página(dentro de inertia)
         color: '#4B5563',

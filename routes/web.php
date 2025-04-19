@@ -22,7 +22,7 @@ Route::prefix('api')->group(function () {
 });
 
 Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha iniciado sesión, puede acceder a las rutas
-    //*2.Usuario pasa por el middleware para poder acceder, si es digno(Mjölnir a mi) pasa a la vista Dashboard administrada por inertia(obsidian://open?vault=TFC-Vault&file=TFC%2FTheCodeholic%20example%2Finertia%2FDocumento%20principal--%20App.jsx)
+    //*2.Usuario pasa por el middleware para poder acceder, si es digno(Mjölnir a mi) pasa a la vista Dashboard administrada por inertia
     Route::get('/dashboard', fn ()=> Inertia::render('Dashboard'))
         ->name('dashboard')//Si recibe la ruta, devuelve el renderizado del componente de inertia
     ;

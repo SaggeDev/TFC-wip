@@ -3,13 +3,13 @@ import { Link } from "@inertiajs/react";
 
 
 
-export default function Pagination({ pagLinks }) {
+export default function Pagination({ pagLinks, activeParam }) {
   return (
     <nav className="text-center m-3">
       {
         pagLinks.links.map((link) => (
           <Link
-          preserveScroll //Para que cada vez que se pulsa el botón, no se reinicie la altura de la página
+            preserveScroll //Para que cada vez que se pulsa el botón, no se reinicie la altura de la página
             dangerouslySetInnerHTML={(() => {
               if (link.label == "&laquo; Previous") {
                 return { __html: "Anterior" };
@@ -26,7 +26,11 @@ export default function Pagination({ pagLinks }) {
               (link.active ? " bg-blue-500 dark:bg-blue-900 dark:text-white" : "") + // El estilo si está activo
               (!link.url ? " !text-gray-500 cursor-not-allowed" : "hover:bg-gray-950") //El estilo si no encuentra el link
             }
-            href={link.url || ""}>
+            href={link.url
+              ? link.url.includes('?')
+                ? `${link.url}&${activeParam}`
+                : `${link.url}?${activeParam}`
+              : ""}>
           </Link>
         ))}
     </nav>

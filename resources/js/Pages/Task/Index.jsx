@@ -1,3 +1,4 @@
+//& La página de listado de proyectos y tareas es casi la misma, asi que la reutilizo
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
@@ -5,18 +6,16 @@ import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading"
 import { useState, useEffect } from "react";
-import { PROJECT_STATUS_TEXT_MAP, PROJECT_STATUS_CLASS_MAP } from "@/constants.jsx";
-import ResetButton from "@/Pages/Project/ResetButton";
+import { TASK_STATUS_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_PRIORITY_CLASS_MAP } from "@/constants.jsx";
+import ResetButton from "@/Pages/Task/ResetButton";
 
 
-export default function Index({ projects, queryParams = null, success }) {//Cada que llame a este componente, voy a tener que mandarle la lista de proyectos
+export default function Index({ tasks, queryParams = null, success }) {//Cada que llame a este componente, voy a tener que mandarle la lista de tareas
 
-    const hasNoParams = Object.keys(queryParams || {}).length === 0;
-    const checkParams=(hasNoParams)=>{
-        hasNoParams= Object.keys(queryParams || {}).length === 0;
-    }
+    
     const { page, ...nonPageParams } = queryParams || {};
     const queryString = new URLSearchParams(nonPageParams).toString();
+
 
     //Para poder buscar los campos
     queryParams = queryParams || {};//El valor por defecto que toma al cargar la página es null
@@ -27,12 +26,12 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
             delete queryParams[name];
         }
 
-        router.get(route("project.index"), queryParams, {
+        router.get(route("task.index"), queryParams, {
             preserveState: true,
             replace: true,
             preserveScroll: true,
-          });
-          
+        });
+
     };
 
     const onKeyPress = (name, e) => {
@@ -54,7 +53,7 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("project.index"), queryParams);
+        router.get(route("task.index"), queryParams);
     };
     return (
 
@@ -64,30 +63,58 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
         <AuthenticatedLayout //Este componente solo se muestra si el que lo solicita es un usuario real y logueado
             header={
                 <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
-                    Proyectos
+                    Tareas Totales: {tasks.meta.total}
+                    <br />
+                    Mis tareas:{tasks.meta.total}
+                    {/* //TODO: Poner en esto las que son del usuario */}
                 </h2>
             }
         >
-            <Head title='Proyectos' ></Head>
+            <Head title='Tareas' ></Head>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md">
-                            {/* <pre>{JSON.stringify(projects,undefined,2)}</pre> */}
-                            {/*//? Esto devuelve un texto con el contenido simple, perfecto para json */}
+                            {/* <pre>{JSON.stringify(tasks,undefined,2)}</pre> */}
+                            {/*//? Esto devuelve un texto con el contenido simple, perfecto para json y revisar lo que devuelve el controlador*/}
 
                             {/*//*Display de los proyectos */}
                             <table className="w-full text-sm text-left rtl:text-right  text-gray-500 dark:text-gray-400 ">
                                 {/*Inicio menu/índice de tabla */}
-                                <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                     <tr className="text-nowrap dark:bg-gray-800  ">
-                                        <th className="px-3 py-3 bg-blue-100 dark:bg-gray-800 rounded-l-xl">Filtros: </th>
-                                        <th className="px-3 py-3 bg-blue-100 dark:bg-gray-800 rounded-r-xl"></th>
+                                        <th className="px-3 py-3 ">
+                                            <SelectInput
+                                                className="w-20 bg-blue-100"
+                                                defaultValue={queryParams.priority}
+                                                onChange={(e) =>
+                                                    searchFieldChanged("priority", e.target.value)
+                                                }
+                                            >
+                                                <option className="text-gray-400" value="">Todo</option>
+                                                <option value="low">Baja</option>
+                                                <option value="high">Alta</option>
+                                                <option value="urgent">Urgente</option>
+                                            </SelectInput> </th>
+                                        <th className="px-3 py-3 ">
+                                            <TextInput
+                                                className="w-11  bg-blue-100 "
+                                                defaultValue={queryParams.id}
+                                                placeholder="ID"
+                                                onBlur={(e) =>
+                                                    searchFieldChanged("id", e.target.value)
+                                                }
+                                                onKeyPress={(e) => {
+                                                    onKeyPress("id", e);
+                                                    getParams();
+                                                }}
+                                            />
+                                        </th>
                                         <th className="px-3 py-3 ">
                                             <TextInput
                                                 className="w-full  bg-blue-100 "
                                                 defaultValue={queryParams.name}
-                                                placeholder="Buscar nombre"
+                                                placeholder="Nombre"
                                                 onBlur={(e) =>
                                                     searchFieldChanged("name", e.target.value)
                                                 }
@@ -99,7 +126,7 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                         </th>
                                         <th className="px-3 py-3">
                                             <SelectInput
-                                                className="w-full bg-blue-100"
+                                                className="w-20 bg-blue-100"
                                                 defaultValue={queryParams.status}
                                                 onChange={(e) =>
                                                     searchFieldChanged("status", e.target.value)
@@ -115,7 +142,7 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                             <TextInput
                                                 className="w-full bg-blue-100"
                                                 defaultValue={queryParams.created_by}
-                                                placeholder="Buscar creador"
+                                                placeholder="Proyecto"
                                                 onBlur={(e) =>
                                                     searchFieldChanged("created_by", e.target.value)
                                                 }
@@ -125,13 +152,13 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3">
-                                        {(queryString!="") && <ResetButton link="project.index" queryString={queryString} />}
+                                            {(queryString!="") && <ResetButton link="task.index" queryString={queryString} />}
 
                                         </th>
                                     </tr>
                                     <tr className="text-nowrap ">
                                         {/* <th className="p-4">ID</th> */}
-                                        <th className="p-3">Imagen</th> {/*Imagen*/}
+                                        <th className="p-3">Prioridad</th> {/*Imagen*/}
                                         <TableHeading
                                             name="id"
                                             sort_field={queryParams.sort_field}
@@ -148,14 +175,14 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                         >
                                             Nombre
                                         </TableHeading>
-                                        <th className="p-3 text-center">Estado</th>
+                                        <th className="">Estado</th>
                                         <TableHeading
                                             name="created_by"
                                             sort_field={queryParams.sort_field}
                                             sort_direction={queryParams.sort_direction}
                                             sortChanged={sortChanged}
                                         >
-                                            Creador
+                                            Proyecto
                                         </TableHeading>
                                         {/* //^Cabe mencionar que por la naturaleza de las relaciones de las tablas, se filtra por orden numérico del id de usuario(Lo que viene a se un orden de creación de usuario) */}
                                         <TableHeading
@@ -164,7 +191,7 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                             sort_direction={queryParams.sort_direction}
                                             sortChanged={sortChanged}
                                         >
-                                            Fecha de creación
+                                            Creacion
                                         </TableHeading>
                                         <TableHeading
                                             name="due_date"
@@ -175,7 +202,7 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                             Fecha límite
                                         </TableHeading>
 
-                                        <th className="p-3 text-center">Total: {projects.meta.total}</th>
+                                        <th className="p-3 text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -186,27 +213,27 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                 <tbody>
 
                                     {
-                                        projects.data.map((project) => {//? Una arrow function que hace algo parecido a un foreach
+                                        tasks.data.map((task) => {//? Una arrow function que hace algo parecido a un foreach
                                             return (
                                                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md"
-                                                    key={project.id}>
-                                                    <td className="px-3 py-2">
-                                                        {/* <img src={project.image} alt="" style={{ width: 60 }} /> */}
-                                                    </td>
+                                                    key={task.id}>
+                                                    <div className="px-1 py-1 text-center content-center">
+                                                        <td className={"px-2 py-1  rounded-lg text-white  " + TASK_PRIORITY_CLASS_MAP[task.priority]}>{TASK_PRIORITY_TEXT_MAP[task.priority]}</td>
+                                                    </div>
                                                     {/* //! Hay un problema con las imágenes generadas por el seeder, hay que sutituirlas porquye la API de la página no funciona
                                             //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
-                                                    <th className="px-3 py-2 text-center">{project.id}</th>
-                                                    <td className="px-3 py-2">{project.name}</td>
+                                                    <th className="px-3 py-2 text-center">{task.id}</th>
+                                                    <td className="px-3 py-2">{task.name}</td>
                                                     {/* //TODO Poner el Link a la página del proyecto en el nombre */}
                                                     <div className="px-1 py-1 text-center content-center">
-                                                        <td className={"px-2 py-1 rounded-lg text-white  " + PROJECT_STATUS_CLASS_MAP[project.status]}>{PROJECT_STATUS_TEXT_MAP[project.status]}</td>
+                                                        <td className={"px-2 py-1  rounded-lg text-white  " + TASK_STATUS_CLASS_MAP[task.status]}>{TASK_STATUS_TEXT_MAP[task.status]}</td>
                                                     </div>
-                                                    <td className="px-3 py-2">{project.createdBy.name}</td>
-                                                    <td className="px-3 py-2">{project.created_at}</td>
-                                                    <td className="px-3 py-2">{project.due_date}</td>
+                                                    <td className="px-3 py-2">{task.fromProject.name}</td>
+                                                    <td className="px-3 py-2">{task.created_at}</td>
+                                                    <td className="px-3 py-2">{task.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                        <Link href={route('project.edit', project.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
+                                                        <Link href={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
                                                         </Link>
                                                     </td>
@@ -221,7 +248,8 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                             </table>
                             {/*//*Fin display de los proyectos */}
                             {/*//* Menu de Paginación */}
-                            <Pagination pagLinks={projects.meta} activeParam={queryString} >
+
+                            <Pagination pagLinks={tasks.meta} activeParam={queryString}>
                             </Pagination>
 
                         </div>

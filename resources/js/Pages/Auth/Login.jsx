@@ -26,7 +26,7 @@ export default function Login({ status, canResetPassword }) {
             <Head title="Iniciar sesión" />
 
             {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
+                <div className="mb-4 text-sm font-medium">
                     {status}
                 </div>
             )}
@@ -90,7 +90,7 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
-                    <PrimaryButton className="ms-4 bg-blue-600 dark:bg-blue-500" disabled={processing}>
+                    <PrimaryButton className="ms-4 bg-blue-700 dark:bg-blue-700 dark:text-white" disabled={processing}>
                         Iniciar sesión
                     </PrimaryButton>
                 </div>
