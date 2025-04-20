@@ -12,8 +12,8 @@ import ResetButton from "@/Pages/Project/ResetButton";
 export default function Index({ projects, queryParams = null, success }) {//Cada que llame a este componente, voy a tener que mandarle la lista de proyectos
 
     const hasNoParams = Object.keys(queryParams || {}).length === 0;
-    const checkParams=(hasNoParams)=>{
-        hasNoParams= Object.keys(queryParams || {}).length === 0;
+    const checkParams = (hasNoParams) => {
+        hasNoParams = Object.keys(queryParams || {}).length === 0;
     }
     const { page, ...nonPageParams } = queryParams || {};
     const queryString = new URLSearchParams(nonPageParams).toString();
@@ -31,8 +31,8 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
             preserveState: true,
             replace: true,
             preserveScroll: true,
-          });
-          
+        });
+
     };
 
     const onKeyPress = (name, e) => {
@@ -81,13 +81,26 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                 {/*Inicio menu/índice de tabla */}
                                 <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                     <tr className="text-nowrap dark:bg-gray-800  ">
-                                        <th className="px-3 py-3 bg-blue-100 dark:bg-gray-800 rounded-l-xl">Filtros: </th>
-                                        <th className="px-3 py-3 bg-blue-100 dark:bg-gray-800 rounded-r-xl"></th>
+                                        <th className="px-3 py-3" />
+                                        <th className="px-3 py-3">
+                                            <TextInput
+                                                className="w-11  bg-blue-100 "
+                                                defaultValue={queryParams.id}
+                                                placeholder="ID"
+                                                onBlur={(e) =>
+                                                    searchFieldChanged("id", e.target.value)
+                                                }
+                                                onKeyPress={(e) => {
+                                                    onKeyPress("id", e);
+                                                    getParams();
+                                                }}
+                                            />
+                                        </th>
                                         <th className="px-3 py-3 ">
                                             <TextInput
                                                 className="w-full  bg-blue-100 "
                                                 defaultValue={queryParams.name}
-                                                placeholder="Buscar nombre"
+                                                placeholder="Nombre"
                                                 onBlur={(e) =>
                                                     searchFieldChanged("name", e.target.value)
                                                 }
@@ -125,7 +138,7 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3">
-                                        {(queryString!="") && <ResetButton link="project.index" queryString={queryString} />}
+                                            {(queryString != "") && <ResetButton link="project.index" queryString={queryString} />}
 
                                         </th>
                                     </tr>
@@ -178,9 +191,8 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                         <th className="p-3 text-center">Total: {projects.meta.total}</th>
                                     </tr>
                                 </thead>
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-
-                                </thead>
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500" />
+                                {/* //^Esto es para el bordecito  */}
                                 {/*Fin menu/índice de tabla */}
                                 {/*Inicio contenidos de tabla */}
                                 <tbody>
@@ -196,7 +208,9 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                                     {/* //! Hay un problema con las imágenes generadas por el seeder, hay que sutituirlas porquye la API de la página no funciona
                                             //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
                                                     <th className="px-3 py-2 text-center">{project.id}</th>
-                                                    <td className="px-3 py-2">{project.name}</td>
+                                                    <td className="px-3 py-2 !text-blue-900 hover:underline">
+                                                        <Link onClick={() => route("project.show", project.id)} >{project.name}</Link>
+                                                    </td>
                                                     {/* //TODO Poner el Link a la página del proyecto en el nombre */}
                                                     <div className="px-1 py-1 text-center content-center">
                                                         <td className={"px-2 py-1 rounded-lg text-white  " + PROJECT_STATUS_CLASS_MAP[project.status]}>{PROJECT_STATUS_TEXT_MAP[project.status]}</td>
@@ -206,7 +220,7 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                                     <td className="px-3 py-2">{project.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                        <Link href={route('project.edit', project.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
+                                                        <Link onClick={() =>route('project.edit', project.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
                                                         </Link>
                                                     </td>

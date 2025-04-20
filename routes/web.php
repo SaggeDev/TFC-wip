@@ -27,7 +27,9 @@ Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha inic
         ->name('dashboard')//Si recibe la ruta, devuelve el renderizado del componente de inertia
     ;
     //?Esto es básicamente barra libre, se prestan las rutas de los controladores como rutas uri
-    Route::resource('project',ProjectController::class);
+    Route::resource('project', ProjectController::class);
+    Route::get('/task/my-tasks', [TaskController::class, 'myTasks'])
+        ->name('task.myTasks');
     Route::resource('task',TaskController::class);
     Route::resource('user',UserController::class);
 });

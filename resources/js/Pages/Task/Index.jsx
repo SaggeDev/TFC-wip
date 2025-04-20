@@ -33,6 +33,10 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
         });
 
     };
+    const hasNoParams = Object.keys(queryParams || {}).length === 0;
+    const checkParams=(hasNoParams)=>{
+        hasNoParams= Object.keys(queryParams || {}).length === 0;
+    }
 
     const onKeyPress = (name, e) => {
         checkParams()
@@ -63,10 +67,7 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
         <AuthenticatedLayout //Este componente solo se muestra si el que lo solicita es un usuario real y logueado
             header={
                 <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
-                    Tareas Totales: {tasks.meta.total}
-                    <br />
-                    Mis tareas:{tasks.meta.total}
-                    {/* //TODO: Poner en esto las que son del usuario */}
+                    Tareas                    
                 </h2>
             }
         >
@@ -85,7 +86,7 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
                                     <tr className="text-nowrap dark:bg-gray-800  ">
                                         <th className="px-3 py-3 ">
                                             <SelectInput
-                                                className="w-20 bg-blue-100"
+                                                className="w-auto bg-blue-100"
                                                 defaultValue={queryParams.priority}
                                                 onChange={(e) =>
                                                     searchFieldChanged("priority", e.target.value)
@@ -126,7 +127,7 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
                                         </th>
                                         <th className="px-3 py-3">
                                             <SelectInput
-                                                className="w-20 bg-blue-100"
+                                                className="w-auto bg-blue-100"
                                                 defaultValue={queryParams.status}
                                                 onChange={(e) =>
                                                     searchFieldChanged("status", e.target.value)
@@ -202,7 +203,7 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
                                             Fecha límite
                                         </TableHeading>
 
-                                        <th className="p-3 text-center">Acciones</th>
+                                        <th className="p-3 text-center">Total: {tasks.meta.total}</th>
                                     </tr>
                                 </thead>
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -224,16 +225,18 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
                                             //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
                                                     <th className="px-3 py-2 text-center">{task.id}</th>
                                                     <td className="px-3 py-2">{task.name}</td>
-                                                    {/* //TODO Poner el Link a la página del proyecto en el nombre */}
-                                                    <div className="px-1 py-1 text-center content-center">
-                                                        <td className={"px-2 py-1  rounded-lg text-white  " + TASK_STATUS_CLASS_MAP[task.status]}>{TASK_STATUS_TEXT_MAP[task.status]}</td>
+                                                    <div className="px-1 py-1 ">
+                                                        <td className={"px-2 py-1 rounded-lg text-white w-50 text-center content-center " + TASK_STATUS_CLASS_MAP[task.status]}>{TASK_STATUS_TEXT_MAP[task.status]}</td>
                                                     </div>
-                                                    <td className="px-3 py-2">{task.fromProject.name}</td>
+                                                    <td className="px-3 py-2 !text-blue-900 hover:underline">
+                                                        <Link onClick={() => route("project.show", task.fromProject.id)} >{task.fromProject.name}</Link>
+                                                    </td>
+                                                    {/* //TODO: Crear el link al proyecto */}
                                                     <td className="px-3 py-2">{task.created_at}</td>
                                                     <td className="px-3 py-2">{task.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                        <Link href={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
+                                                        <Link onClick={() =>route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
                                                         </Link>
                                                     </td>

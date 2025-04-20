@@ -16,7 +16,8 @@ export default function GuestLayout({ children }) {
                 //!1*
                 //&Según un usuario de stackOverflow en https://stackoverflow.com/questions/45046030/maintaining-href-open-in-new-tab-with-an-onclick-handler-in-react,
                 //&Existe una vulnerabilidad al usar href solo, porque esta página puede(En pocas palabras) usar la conexión establecida entre las 2 ventanas para manipular la anterior
-                //?Para solucionarlo usaré la aplicación de https://stackoverflow.com/users/974045/gibolt en este mismo post, mediante la cual se encarga de solamente crear una nueva pestaña y buscar la dirección.   */}
+                //?Para solucionarlo usaré la aplicación de https://stackoverflow.com/users/974045/gibolt en este mismo post, mediante la cual se encarga de solamente crear una nueva pestaña y buscar la dirección.
+                //?Además, al usar el componente Link en react para esto, se esconde la direccion de los links   */}
                     <ApplicationLogo className="h-20 w-20 fill-current text-blue-500 dark:text-blue-600" />
                 </Link>
             </div>

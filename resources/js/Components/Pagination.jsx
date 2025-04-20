@@ -18,7 +18,6 @@ export default function Pagination({ pagLinks, activeParam }) {
               } else {
                 return { __html: link.label };
               }
-              //TODO:Idiomas
             })()}//Con esto se inserta como contenido html y que no se interprete como string, el grupo condicional de arriba es para la traducción
             key={link.label} //El identificador
             className={
