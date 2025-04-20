@@ -229,14 +229,13 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
                                                         <td className={"px-2 py-1 rounded-lg text-white w-50 text-center content-center " + TASK_STATUS_CLASS_MAP[task.status]}>{TASK_STATUS_TEXT_MAP[task.status]}</td>
                                                     </div>
                                                     <td className="px-3 py-2 !text-blue-900 hover:underline">
-                                                        <Link onClick={() => route("project.show", task.fromProject.id)} >{task.fromProject.name}</Link>
+                                                        <Link href={route("project.show", task.fromProject)} >{task.fromProject.name}</Link>
                                                     </td>
-                                                    {/* //TODO: Crear el link al proyecto */}
                                                     <td className="px-3 py-2">{task.created_at}</td>
                                                     <td className="px-3 py-2">{task.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                        <Link onClick={() =>route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
+                                                        <Link onClick={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
                                                         </Link>
                                                     </td>

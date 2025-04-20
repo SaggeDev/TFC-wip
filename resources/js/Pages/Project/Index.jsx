@@ -209,7 +209,10 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                             //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
                                                     <th className="px-3 py-2 text-center">{project.id}</th>
                                                     <td className="px-3 py-2 !text-blue-900 hover:underline">
-                                                        <Link onClick={() => route("project.show", project.id)} >{project.name}</Link>
+                                                        <Link href={route("project.show", project=project)} >{project.name}</Link>
+                                                        {/* //?La razon por la que aqui estoy usando href es porque 
+                                                        // ?1. Estoy redirigiendo de mi página a mi página
+                                                        // ?2. Quiero que ocurran los eventos default */}
                                                     </td>
                                                     {/* //TODO Poner el Link a la página del proyecto en el nombre */}
                                                     <div className="px-1 py-1 text-center content-center">
@@ -220,7 +223,7 @@ export default function Index({ projects, queryParams = null, success }) {//Cada
                                                     <td className="px-3 py-2">{project.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                        <Link onClick={() =>route('project.edit', project.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
+                                                        <Link onClick={route('project.edit', project.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
                                                         </Link>
                                                     </td>
