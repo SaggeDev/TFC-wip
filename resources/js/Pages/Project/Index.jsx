@@ -69,7 +69,6 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                 </h2>
             }
         >
-            {console.log(auth)}
             <Head title='Proyectos' ></Head>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -225,13 +224,18 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                     <td className="px-3 py-2">{project.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                            {console.log(usersOnProject)}
-                                                        {/* {((usersOnProject.some(user => user.id === auth.user.id) ||
+                                                        {(
+                                                            (Array.isArray(usersOnProject) && usersOnProject.some(user => user.id === auth.user.id)) ||
                                                             (project.createdBy.id === auth.user.id) ||
-                                                            auth.user.role === 'admin')) &&
-                                                            <Link onClick={route('project.edit', project.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
-                                                                Editar
-                                                            </Link>} */}
+                                                            auth.user.role === 'admin'
+                                                        ) && (
+                                                                <Link
+                                                                    onClick={route('project.edit', project.id)}
+                                                                    className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base"
+                                                                >
+                                                                    Editar
+                                                                </Link>
+                                                            )}
                                                     </td>
 
                                                     {/* //^Parte de Actions */}
