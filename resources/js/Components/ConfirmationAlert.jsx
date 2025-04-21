@@ -35,7 +35,7 @@ export default function TransitionAlerts({ text }) {
           }
           sx={{ mb: 2 }}
         >
-          {text} ha sido eliminado correctamente
+          {text} 
         </Alert>
       </Collapse>
 

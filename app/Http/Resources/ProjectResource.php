@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\ProjectUserResource;
 
 class ProjectResource extends JsonResource
 {
@@ -25,8 +26,9 @@ class ProjectResource extends JsonResource
                 'image'=>$this->image,
                 'project_link'=>$this->project_link,
                 'createdBy'=>new UserResource($this->createdBy),//? Esta linea devuelve(en vez de la clave en si) el nombre de usuario, pasando por la tabla usuario.
-                'updatedBy'=>new UserResource($this->updatedBy)//? Tecnicamente está configurado para que devuelva más parámetros
+                'updatedBy'=>new UserResource($this->updatedBy),//? Tecnicamente está configurado para que devuelva más parámetros
                 //^Estoy llamando a los metodos dentro de userResource, no a los campos
+                'usersApplied'=>ProjectUserResource::collection($this->whenLoaded('projectUsers'))
             ];
     }
     

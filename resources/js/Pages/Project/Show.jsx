@@ -1,34 +1,50 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link,router } from "@inertiajs/react";
 import {
   PROJECT_STATUS_CLASS_MAP,
   PROJECT_STATUS_TEXT_MAP,
 } from "@/constants.jsx";
 import TasksTable from "../Task/TasksTable.jsx";
 import ConfirmationAlert from "@/Components/ConfirmationAlert.jsx"
+import { useState } from "react";
+import { Button } from "@headlessui/react";
 
-export default function Show({ auth, success, project, tasks, queryParams }) {
+export default function Show({ auth, success, project, UsersOnProject, tasks, queryParams }) {
+  const [isIn, setIsIn] = useState(false);
+  const joinProject = (user_id, project_id) => {
+    if (!window.confirm("¿Estás seguro de unirte al proyecto? No es reversible")) return;
+  
+    router.post(
+      route('projectUser.store', { project: project_id }), 
+      { user_id: user_id } 
+    );
+  };
+  
   return (
+
     <AuthenticatedLayout
+
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
             Proyecto: {project.data.name}
           </h2>
-          <Link
+          {isIn&&<Link
             href={route("project.edit", { project: project.data.id })}
-            className="bg-emerald-500 py-1.5 px-4 text-white rounded shadow-md transition hover:bg-emerald-600"
+            className="bg-amber-500 py-1.5 px-4 text-white rounded shadow-md transition hover:bg-amber-600"
           >
             Editar
-          </Link>
+          </Link>}
         </div>
       }
     >
-      {success &&<ConfirmationAlert text={success}/>}
-     
+      <Head title={'Proyecto ' + project.data.id}></Head>
 
-      {/* Project Overview */}
+      {success && <ConfirmationAlert text={success} />}
+
+      {/* <pre>{JSON.stringify(UsersOnProject, undefined, 2)}</pre> */}
+
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
@@ -38,7 +54,7 @@ export default function Show({ auth, success, project, tasks, queryParams }) {
               className="w-full h-64 object-cover rounded-t-md"
             />
             <div className="p-6 text-gray-900 dark:text-gray-100 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-4">
                   <Info label="ID del Proyecto" value={project.data.id} />
                   <Info label="Nombre" value={project.data.name} />
@@ -55,12 +71,48 @@ export default function Show({ auth, success, project, tasks, queryParams }) {
                       </span>
                     }
                   />
-                  <Info label="Creado por" value={project.data.createdBy.name} />
+
                 </div>
                 <div className="space-y-4">
                   <Info label="Fecha límite" value={project.data.due_date} />
                   <Info label="Creación" value={project.data.created_at} />
-                  <Info label="Actualizado por" value={project.data.updatedBy.name} />
+                  <Info label="Creado por" value={(project.data.createdBy.name) + " (" + (project.data.createdBy.email) + ")"} />
+                </div>
+                <div>
+
+                  <Info
+                    label="Participante/s:"
+                    value={
+
+                      UsersOnProject.length > 0 ? (
+                        <ul>
+                          {UsersOnProject.map((user) => {
+
+                            if (user.id === auth.user.id) {
+                              if (!isIn) {
+                                setIsIn(true);
+                              }
+                              return (<li key={user.id} className="text-blue-700">{user.name} (Tu)</li>);
+
+                            }
+
+                            else {
+                              return (<li key={user.id}>{user.name} ({user.email})</li>);
+                            }
+
+
+                          })}
+                        </ul>
+                      ) : (
+                        "Nadie se ha unido al proyecto todavía"
+                      )
+
+                    }
+                  />
+                  {!isIn && (
+                    <Button onClick={() => { joinProject(auth.user.id, project.data.id) }} className="bg-green-500 text-white rounded-md p-2 ">Unirse</Button>
+                  )}
+
                 </div>
               </div>
 
@@ -85,19 +137,19 @@ export default function Show({ auth, success, project, tasks, queryParams }) {
               </h3>
               <TasksTable
                 tasks={tasks}
-                
                 queryParams={queryParams}
                 hideProjectColumn={true}
+                project={project.data.id}
+                isIn={isIn}
               />
             </div>
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </AuthenticatedLayout >
   );
 }
 
-// Reusable Info Display Component
 function Info({ label, value }) {
   return (
     <div>

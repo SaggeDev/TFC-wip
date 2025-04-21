@@ -10,7 +10,7 @@ import { TASK_STATUS_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TA
 import ResetButton from "@/Pages/Task/ResetButton";
 
 
-export default function Index({ tasks, queryParams = null, success }) {//Cada que llame a este componente, voy a tener que mandarle la lista de tareas
+export default function Index({ tasks, queryParams = null, success, auth }) {//Cada que llame a este componente, voy a tener que mandarle la lista de tareas
 
     
     const { page, ...nonPageParams } = queryParams || {};
@@ -63,7 +63,7 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
 
 
 
-
+        
         <AuthenticatedLayout //Este componente solo se muestra si el que lo solicita es un usuario real y logueado
             header={
                 <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
@@ -71,6 +71,7 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
                 </h2>
             }
         >
+            {console.log(auth)}
             <Head title='Tareas' ></Head>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -235,9 +236,14 @@ export default function Index({ tasks, queryParams = null, success }) {//Cada qu
                                                     <td className="px-3 py-2">{task.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                        <Link onClick={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
+                                                        {/* {console.log(task.createdFor.id)}
+                                                        {console.log(auth.user.id)} 
+                                                        {console.log(task.createdBy.id)} 
+                                                        */}
+                                                        {(task.createdFor.id==auth.user.id||task.createdBy.id==auth.user.id||auth.user.role=='admin') && <Link onClick={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
-                                                        </Link>
+                                                        </Link>}
+                                                        
                                                     </td>
                                                     {/* //^Parte de Actions */}
                                                     {/* //TODO: Hacer que solo el admin pueda ver el botón */}

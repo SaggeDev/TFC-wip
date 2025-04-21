@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class TaskController extends Controller
@@ -24,12 +25,19 @@ class TaskController extends Controller
         
         $query = Task::query();
 
+
         $sortField = request("sort_field", 'id');
         $sortDirection = request("sort_direction", "asc");
         //^Para el orden de registros
 
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("id")) {
+            $query->where("id", request("id"));
+        }
+        if (request("priority")) {
+            $query->where("priority", request("priority"));
         }
         if (request("status")) {
             $query->where("status", request("status"));
@@ -45,12 +53,7 @@ class TaskController extends Controller
         //         $q->where('name','like',  '%' . request('assigned_user_id') . '%');
         //     });
         // }
-        if (request("id")) {
-            $query->where("id", request("id"));
-        }
-        if (request("priority")) {
-            $query->where("priority", request("priority"));
-        }
+        
 
         $tasks = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
@@ -156,7 +159,7 @@ class TaskController extends Controller
             Storage::disk('public')->deleteDirectory(dirname($task->image));
         }
         return to_route('project.show', ['project' => $task->fromProject])
-            ->with('success', $name);
+            ->with('success', "La tarea [" . $name . "] ha sido eliminada con éxito");
         }
 
     public function myTasks()

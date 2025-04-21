@@ -10,6 +10,10 @@ use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Http\Resources\ProjectUserResource;
+use App\Http\Resources\UserResource;
+use App\Models\ProjectUser;
+
 
 
 class ProjectController extends Controller
@@ -17,8 +21,8 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.'
      */
-    
-    public function index()//Si en web.php llamamos a este constructor sin especificar el método, se ejecuta automáticamente el index. Oportunidad perfecta para poner un router de react con inertia
+
+    public function index() //Si en web.php llamamos a este constructor sin especificar el método, se ejecuta automáticamente el index. Oportunidad perfecta para poner un router de react con inertia
     {
         $query = Project::query();
 
@@ -32,10 +36,10 @@ class ProjectController extends Controller
         if (request("status")) {
             $query->where("status", request("status"));
         }
-        
+
         if (request('created_by')) {
             $query->whereHas('createdBy', function ($q): void {
-                $q->where('name','like',  '%' . request('created_by') . '%');
+                $q->where('name', 'like',  '%' . request('created_by') . '%');
             });
         }
 
@@ -51,6 +55,7 @@ class ProjectController extends Controller
             "projects" => ProjectResource::collection($projects),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
+            
         ]);
     }
 
@@ -97,6 +102,7 @@ class ProjectController extends Controller
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
         }
+
         if (request("status")) {
             $query->where("status", request("status"));
         }
@@ -104,13 +110,21 @@ class ProjectController extends Controller
         $tasks = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
+
+        $usersOnProject = $project->users; 
+
+        // dd($usersOnProject);
+        // ^ Esta herramienta al igual que el <pre> sirve para ver contenidos de la conexion y de los parámetros pasados
+
         return inertia('Project/Show', [
             'project' => new ProjectResource($project),
-            "tasks" => TaskResource::collection($tasks),
+            'tasks' => TaskResource::collection($tasks),
+            'UsersOnProject' => $usersOnProject,
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
         ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

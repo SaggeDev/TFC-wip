@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements MustVerifyEmail//Vamos a implementar una verificacón de mail
+class User extends Authenticatable implements MustVerifyEmail //Vamos a implementar una verificacón de mail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail//Vamos a implement
      *
      * @var list<string>
      */
-    protected $fillable = [//TODO: Parte de roles
+    protected $fillable = [ //TODO: Parte de roles
         'name',
         'email',
         'password',
@@ -46,7 +46,13 @@ class User extends Authenticatable implements MustVerifyEmail//Vamos a implement
         ];
     }
     public function projects()
+{
+    return $this->belongsToMany(Project::class)->withTimestamps();
+}
+
+
+    public function project()
     {
-        return $this->belongsToMany(Project::class, 'project_user', 'user_id', 'project_id')->withTimestamps();
+        return $this->belongsTo(Project::class);
     }
 }

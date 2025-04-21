@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProjectUserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,9 @@ Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha inic
         ->name('task.myTasks');
     Route::resource('task',TaskController::class);
     Route::resource('user',UserController::class);
+
+    Route::post('/projects/{project}/users', [ProjectUserController::class, 'store'])->name('projectUser.store');
+
 });
 
 

@@ -1,25 +1,42 @@
+import { Head, Link, router } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
-import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
+import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
-import { TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants.jsx";
-import { Link, router } from "@inertiajs/react";
+import { useState, useEffect } from "react";
+import { Button } from "@headlessui/react";
+import {
+  TASK_STATUS_TEXT_MAP,
+  TASK_STATUS_CLASS_MAP,
+  TASK_PRIORITY_TEXT_MAP,
+  TASK_PRIORITY_CLASS_MAP,
+} from "@/constants.jsx";
+import ResetButton from "@/Pages/Task/ResetButton";
 
-export default function TasksTable({
-  tasks,
-  success,
-  queryParams = null,
-  hideProjectColumn = false,
-}) {
-  queryParams = queryParams || {};
-
-  const searchFieldChanged = (name, value) => {
-    if (value) {
-      queryParams[name] = value;
-    } else {
-      delete queryParams[name];
+export default function Index({ tasks, queryParams , project, isIn }) {
+  queryParams = queryParams ?? {};
+  const { page, ...nonPageParams } = queryParams;
+  const queryString = new URLSearchParams(nonPageParams).toString();
+  const deleteTask = (task) => {
+    if (!window.confirm("Estas seguro que quieres eliminar esta tarea?")) {
+      return;
     }
-    router.get(route("task.index"), queryParams);
+    router.delete(route("task.destroy", task.id));
+  };
+  const searchFieldChanged = (name, value) => {
+    const updatedParams = { ...queryParams };
+
+    if (value) {
+      updatedParams[name] = value;
+    } else {
+      delete updatedParams[name];
+    }
+
+    router.get(route("project.show", project), updatedParams, {
+      preserveState: true,
+      replace: true,
+      preserveScroll: true,
+    });
   };
 
   const onKeyPress = (name, e) => {
@@ -28,72 +45,98 @@ export default function TasksTable({
   };
 
   const sortChanged = (name) => {
-    if (name === queryParams.sort_field) {
-      queryParams.sort_direction =
-        queryParams.sort_direction === "asc" ? "desc" : "asc";
-    } else {
-      queryParams.sort_field = name;
-      queryParams.sort_direction = "asc";
-    }
-    router.get(route("task.index"), queryParams);
-  };
+    const updatedParams = { ...queryParams };
 
-  const deleteTask = (task ) => {
-    if (!window.confirm("Are you sure you want to delete the task?")) return;
-    router.delete(route("task.destroy", task.id));
+    if (name === updatedParams.sort_field) {
+      updatedParams.sort_direction =
+        updatedParams.sort_direction === "asc" ? "desc" : "asc";
+    } else {
+      updatedParams.sort_field = name;
+      updatedParams.sort_direction = "asc";
+    }
+
+    router.get(route("project.show", project), updatedParams, {
+      preserveState: true,
+      replace: true,
+      preserveScroll: true,
+    });
   };
 
   return (
     <>
-      {success && (
-        <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
-          {success}
-        </div>
-      )}
-
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
             <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md">
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                {/* Filter Inputs Row */}
-                <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                   <tr className="text-nowrap dark:bg-gray-800">
+                    <th className="px-3 py-3">
+                      {/* <SelectInput
+                        className="w-auto bg-blue-100"
+                        value={queryParams.priority || ""}
+                        onChange={(e) =>
+                          searchFieldChanged("priority", e.target.value)
+                        }
+                      >
+                        <option className="text-gray-400" value="">
+                          Todo
+                        </option>
+                        <option value="low">Baja</option>
+                        <option value="high">Alta</option>
+                        <option value="urgent">Urgente</option>
+                      </SelectInput> */}
+                    </th>
+                    <th className="px-3 py-3">
+                      {/* <TextInput
+                        className="w-full bg-blue-100"
+                        value={queryParams.id || ""}
+                        placeholder="ID"
+                        onChange={(e) =>
+                          searchFieldChanged("id", e.target.value)
+                        }
+                        onKeyPress={(e) => onKeyPress("id", e)}
+                      /> */}
+                    </th>
                     <th className="px-3 py-3" />
-                    <th className="px-3 py-3" />
-                    {!hideProjectColumn && <th className="px-3 py-3" />}
                     <th className="px-3 py-3">
                       <TextInput
                         className="w-full bg-blue-100"
-                        defaultValue={queryParams.name}
-                        placeholder="Task Name"
-                        onBlur={(e) =>
-                          searchFieldChanged("name", e.target.value)
-                        }
+                        placeholder="Nombre"
+                      
                         onKeyPress={(e) => onKeyPress("name", e)}
                       />
                     </th>
                     <th className="px-3 py-3">
                       <SelectInput
-                        className="w-full bg-blue-100"
-                        defaultValue={queryParams.status}
+                        className="w-auto bg-blue-100"
+                        value={queryParams.status || ""}
                         onChange={(e) =>
                           searchFieldChanged("status", e.target.value)
                         }
                       >
-                        <option value="">Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="completed">Completed</option>
+                        <option className="text-gray-400" value="">
+                          Todos
+                        </option>
+                        <option value="pending">Pendiente</option>
+                        <option value="in_progress">En progreso</option>
+                        <option value="completed">Completado</option>
                       </SelectInput>
                     </th>
                     <th className="px-3 py-3" />
                     <th className="px-3 py-3" />
-                    <th className="px-3 py-3" />
-                    <th className="px-3 py-3" />
+                    <th className="px-3 py-3">
+                      {queryString !== "" && (
+                        <ResetButton
+                          link="project.show"
+                          project={project}
+                          queryString={queryString}
+                        />
+                      )}
+                    </th>
                   </tr>
-                  {/* Column Headers */}
                   <tr className="text-nowrap">
+                    <th className="p-3">Prioridad</th>
                     <TableHeading
                       name="id"
                       sort_field={queryParams.sort_field}
@@ -102,10 +145,7 @@ export default function TasksTable({
                     >
                       ID
                     </TableHeading>
-                    <th className="px-3 py-3">Imagen</th>
-                    {!hideProjectColumn && (
-                      <th className="px-3 py-3">Proyecto</th>
-                    )}
+                    <th className="">Imagen</th>
                     <TableHeading
                       name="name"
                       sort_field={queryParams.sort_field}
@@ -114,13 +154,14 @@ export default function TasksTable({
                     >
                       Nombre
                     </TableHeading>
+                    <th className="">Estado</th>
                     <TableHeading
-                      name="status"
+                      name="createdBy"
                       sort_field={queryParams.sort_field}
                       sort_direction={queryParams.sort_direction}
                       sortChanged={sortChanged}
                     >
-                      Estado
+                      Asignado a
                     </TableHeading>
                     <TableHeading
                       name="created_at"
@@ -128,7 +169,7 @@ export default function TasksTable({
                       sort_direction={queryParams.sort_direction}
                       sortChanged={sortChanged}
                     >
-                      Creado
+                      Creación
                     </TableHeading>
                     <TableHeading
                       name="due_date"
@@ -138,30 +179,37 @@ export default function TasksTable({
                     >
                       Fecha límite
                     </TableHeading>
-                    <th className="px-3 py-3">Creador</th>
-                    <th className="px-3 py-3 text-right">Acciones</th>
+                    <th className="p-3 text-center">
+                      Total: {tasks.meta.total}
+                    </th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {tasks.data.map((task) => (
                     <tr
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md"
                       key={task.id}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     >
-                      <td className="px-3 py-2">{task.id}</td>
-                      <td className="px-3 py-2">
-                        <img src={task.image} style={{ width: 60 }} />
+                      <td className="px-2 py-1 text-center">
+                        <span
+                          className={
+                            "px-2 py-1 rounded-lg text-white " +
+                            TASK_PRIORITY_CLASS_MAP[task.priority]
+                          }
+                        >
+                          {TASK_PRIORITY_TEXT_MAP[task.priority]}
+                        </span>
                       </td>
-                      {!hideProjectColumn && (
-                        <td className="px-3 py-2">{task.fromProject.name}</td>
-                      )}
-                      <td className="px-3 py-2 text-blue-900 hover:underline">
-                        <Link href={route("task.show", task.id)}>
-                          {task.name}
-                        </Link>
+                      <td className="px-3 py-2 text-center">{task.id}</td>
+                      <td className="px-3 py-2 text-center">
+                        <img
+                          src={task.image}
+                          alt={`Imagen de ${task.name}`}
+                          className="h-12 w-12 object-cover rounded"
+                        />
                       </td>
-                      <td className="px-3 py-2">
+                      <td className="px-3 py-2">{task.name}</td>
+                      <td className="px-2 py-1 text-center">
                         <span
                           className={
                             "px-2 py-1 rounded-lg text-white " +
@@ -171,31 +219,33 @@ export default function TasksTable({
                           {TASK_STATUS_TEXT_MAP[task.status]}
                         </span>
                       </td>
-                      <td className="px-3 py-2">{task.created_at}</td>
-                      <td className="px-3 py-2">{task.due_date}</td>
-                      <td className="px-3 py-2">
-                        {task.fromProject.createdBy.name}
-                      </td>
-                      <td className="px-3 py-2 text-right text-nowrap">
-                        <Link
-                          href={route("task.edit", task.id)}
-                          className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md text-base"
-                        >
-                          Editar
-                        </Link>
-                        <button
-                          onClick={() => deleteTask(task)}
-                          className="text-red-700 bg-red-300 dark:text-red-300 dark:bg-red-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md text-base"
-                        >
-                          Eliminar
-                        </button>
+                      <td className="px-4 py-2">{task.createdFor.name}</td>
+                      <td className="px-4 py-2">{task.created_at}</td>
+                      <td className="px-4 py-2">{task.due_date}</td>
+                      <td className="px-4 py-2">
+                        {isIn && (
+                          <>
+                            <Link
+                              href={route("task.edit", task.id)}
+                              className="text-yellow-800 bg-yellow-200 dark:text-yellow-200 dark:bg-yellow-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
+                            >
+                              Editar
+                            </Link>
+                            <button
+                              onClick={() => deleteTask(task)}
+                              className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
+                            >
+                              Eliminar
+                            </button>
+                          </>
+                        )}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
 
-              <Pagination pagLinks={tasks.meta} />
+              <Pagination pagLinks={tasks.meta} activeParam={queryString} />
             </div>
           </div>
         </div>

@@ -14,7 +14,7 @@ export default function ApplicationLogo(props) {
           src="/favicon.ico"
           alt=".."
           {...props}
-          className="dark:bg-gray-950 rounded-full p-2"
+          className="dark:bg-white rounded-full p-2"
         />
       );
       

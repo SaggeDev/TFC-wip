@@ -79,7 +79,12 @@ export default function Login({ status, canResetPassword }) {
                         </span>
                     </label>
                 </div>
-
+                <Link
+                    href={route('register')}
+                    className="rounded-md text-sm text-blue-900 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                >
+                    ¿No estás registrado?
+                </Link>
                 <div className="mt-4 flex items-center justify-end">
                     {canResetPassword && (
                         <Link
@@ -89,6 +94,7 @@ export default function Login({ status, canResetPassword }) {
                             Has olvidado la contraseña?
                         </Link>
                     )}
+
 
                     <PrimaryButton className="ms-4 bg-blue-700 dark:bg-blue-700 dark:text-white" disabled={processing}>
                         Iniciar sesión
