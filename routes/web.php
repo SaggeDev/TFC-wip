@@ -29,8 +29,7 @@ Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha inic
     ;
     //?Esto es básicamente barra libre, se prestan las rutas de los controladores como rutas uri
     Route::resource('project', ProjectController::class);
-    Route::get('/task/my-tasks', [TaskController::class, 'myTasks'])
-        ->name('task.myTasks');
+    
     Route::resource('task',TaskController::class);
     Route::resource('user',UserController::class);
 

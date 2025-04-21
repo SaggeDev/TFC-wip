@@ -13,7 +13,7 @@ import {
 } from "@/constants.jsx";
 import ResetButton from "@/Pages/Task/ResetButton";
 
-export default function Index({ tasks, queryParams , project, isIn }) {
+export default function Index({ tasks, queryParams, project, isIn }) {
   queryParams = queryParams ?? {};
   const { page, ...nonPageParams } = queryParams;
   const queryString = new URLSearchParams(nonPageParams).toString();
@@ -103,7 +103,7 @@ export default function Index({ tasks, queryParams , project, isIn }) {
                       <TextInput
                         className="w-full bg-blue-100"
                         placeholder="Nombre"
-                      
+
                         onKeyPress={(e) => onKeyPress("name", e)}
                       />
                     </th>
@@ -208,7 +208,9 @@ export default function Index({ tasks, queryParams , project, isIn }) {
                           className="h-12 w-12 object-cover rounded"
                         />
                       </td>
-                      <td className="px-3 py-2">{task.name}</td>
+                      <td className="px-3 py-2 !text-blue-900 hover:underline">
+                        <Link href={route("task.show", task.id)} >{task.name}</Link>
+                      </td>
                       <td className="px-2 py-1 text-center">
                         <span
                           className={

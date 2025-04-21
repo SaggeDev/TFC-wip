@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
+use Inertia\Inertia;
 use App\Http\Resources\UserResource;
 use App\Models\Project;
 use App\Models\Task;

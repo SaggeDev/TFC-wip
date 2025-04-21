@@ -55,4 +55,5 @@ class User extends Authenticatable implements MustVerifyEmail //Vamos a implemen
     {
         return $this->belongsTo(Project::class);
     }
+    
 }

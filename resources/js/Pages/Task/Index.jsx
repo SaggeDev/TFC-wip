@@ -71,7 +71,6 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                 </h2>
             }
         >
-            {console.log(auth)}
             <Head title='Tareas' ></Head>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -225,7 +224,9 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                     {/* //! Hay un problema con las imágenes generadas por el seeder, hay que sutituirlas porquye la API de la página no funciona
                                             //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
                                                     <th className="px-3 py-2 text-center">{task.id}</th>
-                                                    <td className="px-3 py-2">{task.name}</td>
+                                                    <td className="px-3 py-2 !text-blue-900 hover:underline">
+                                                        <Link href={route("task.show", task.id)} >{task.name}</Link>
+                                                    </td>
                                                     <div className="px-1 py-1 ">
                                                         <td className={"px-2 py-1 rounded-lg text-white w-50 text-center content-center " + TASK_STATUS_CLASS_MAP[task.status]}>{TASK_STATUS_TEXT_MAP[task.status]}</td>
                                                     </div>
