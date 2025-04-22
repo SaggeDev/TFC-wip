@@ -42,6 +42,11 @@ class ProjectController extends Controller
                 $q->where('name', 'like',  '%' . request('created_by') . '%');
             });
         }
+        $usersOnProject = (clone $query)->with('projectUsers')->get()
+            ->pluck('projectUsers')
+            ->flatten()
+            ->unique('id')
+            ->values();
 
         $projects = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
@@ -55,7 +60,8 @@ class ProjectController extends Controller
             "projects" => ProjectResource::collection($projects),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
-            
+            'usersOnProject' => $usersOnProject
+
         ]);
     }
 
@@ -111,7 +117,7 @@ class ProjectController extends Controller
             ->paginate(10)
             ->onEachSide(1);
 
-        $usersOnProject = $project->users; 
+        $usersOnProject = $project->users;
 
         // dd($usersOnProject);
         // ^ Esta herramienta al igual que el <pre> sirve para ver contenidos de la conexion y de los parámetros pasados
@@ -142,18 +148,20 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         $data = $request->validated();
-        $image = $data['image'] ?? null;
+        $image = $request->file('image');
         $data['updated_by'] = Auth::id();
         if ($image) {
             if ($project->image) {
                 Storage::disk('public')->deleteDirectory(dirname($project->image));
             }
             $data['image'] = $image->store('project/' . Str::random(), 'public');
+        } else {
+            $data['image'] = $project->image;
         }
         $project->update($data);
 
-        return to_route('project.index')
-            ->with('success', "Project \"$project->name\" was updated");
+        return to_route('project.show', $project->id)
+            ->with('success', "El proyecto \"$project->name\" se ha editado con éxito");
     }
 
     /**
@@ -166,7 +174,7 @@ class ProjectController extends Controller
         if ($project->image) {
             Storage::disk('public')->deleteDirectory(dirname($project->image));
         }
-        return to_route('project.index')
-            ->with('success', "Project \"$name\" was deleted");
+        return to_route('project.show', $project->id)
+            ->with('success', "El proyecto \"$name\" ha sido borrado con éxito");
     }
 }

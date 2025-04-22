@@ -19,6 +19,8 @@ class Project extends Model
     return $this->belongsToMany(User::class)->withTimestamps();
 }
 
+    protected $fillable = ['name', 'description', 'due_date', 'status', 'image', 'project_link'];
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by'); //Especifia la relación de 1-n con users y dice que la columna es created by
@@ -35,4 +37,6 @@ class Project extends Model
     {
         return $this->hasMany(ProjectUser::class);
     }
+    
+    
 }

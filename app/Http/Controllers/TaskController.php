@@ -63,7 +63,6 @@ class TaskController extends Controller
         // 1. Busca los resultados y crea un JSON
         // 2. Separa los resultados por cantidades de 10
         // 3. Añade al json datos como el siguiente y anterior índice y algunas cosas más para que podamos interactuar con esto o(Lo más interesante) mandar a crear un paginador prefabricado
-        //! El problema con esto es que inertia envia los datos al arie libre, por lo que lleva a fallas de seguridad si no creamos un userResource que controler lo que se puede sacar y lo que no
         return inertia("Task/Index", [
             "tasks" => TaskResource::collection($tasks),
             'queryParams' => request()->query() ?: null,

@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link,router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import {
   PROJECT_STATUS_CLASS_MAP,
   PROJECT_STATUS_TEXT_MAP,
@@ -11,15 +11,28 @@ import { Button } from "@headlessui/react";
 
 export default function Show({ auth, success, project, UsersOnProject, tasks, queryParams }) {
   const [isIn, setIsIn] = useState(false);
+  const [isCreator, setIsCreator] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const joinProject = (user_id, project_id) => {
     if (!window.confirm("¿Estás seguro de unirte al proyecto? No es reversible")) return;
-  
+
     router.post(
-      route('projectUser.store', { project: project_id }), 
-      { user_id: user_id } 
+      route('projectUser.store', { project: project_id }),
+      { user_id: user_id }
     );
   };
-  
+  console.log(project.data.createdBy)
+  if (auth.user.id === project.data.createdBy.id) {
+    if (!isCreator) {
+      setIsCreator(true);
+    }
+  }
+  if (auth.user.role === 'admin') {
+    if (!isAdmin) {
+      setIsAdmin(true);
+    }
+  }
+
   return (
 
     <AuthenticatedLayout
@@ -30,12 +43,13 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
           <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
             Proyecto: {project.data.name}
           </h2>
-          {isIn&&<Link
+          {(isIn || isCreator || isAdmin) && <Link
             href={route("project.edit", { project: project.data.id })}
             className="bg-amber-500 py-1.5 px-4 text-white rounded shadow-md transition hover:bg-amber-600"
           >
             Editar
           </Link>}
+          {/* //^Solo aparece cuando está el creador, administrador o está unido el user */}
         </div>
       }
     >
@@ -47,12 +61,13 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-            <img
-              src={project.data.image}
-              alt="Project visual"
-              className="w-full h-64 object-cover rounded-t-md"
-            />
+          <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 ">
+            <div className="p-2 bg-gray-100 rounded-lg shadow-sm">
+              <img
+                src={"/storage/" + project.data.image}
+                className="w-auto h-64 object-cover rounded-md"
+              />
+            </div>
             <div className="p-6 text-gray-900 dark:text-gray-100 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-4">
@@ -87,7 +102,6 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
                       UsersOnProject.length > 0 ? (
                         <ul>
                           {UsersOnProject.map((user) => {
-
                             if (user.id === auth.user.id) {
                               if (!isIn) {
                                 setIsIn(true);
@@ -95,6 +109,7 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
                               return (<li key={user.id} className="text-blue-700">{user.name} (Tu)</li>);
 
                             }
+
 
                             else {
                               return (<li key={user.id}>{user.name} ({user.email})</li>);
@@ -141,6 +156,8 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
                 hideProjectColumn={true}
                 project={project.data.id}
                 isIn={isIn}
+                isCreator={isCreator}
+                isAdmin={isAdmin}
               />
             </div>
           </div>

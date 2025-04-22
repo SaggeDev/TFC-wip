@@ -12,10 +12,15 @@ import ResetButton from "@/Pages/Task/ResetButton";
 
 export default function Index({ tasks, queryParams = null, success, auth }) {//Cada que llame a este componente, voy a tener que mandarle la lista de tareas
 
-    
+
     const { page, ...nonPageParams } = queryParams || {};
     const queryString = new URLSearchParams(nonPageParams).toString();
-
+    const deleteTask = (task) => {
+        if (!window.confirm("Estas seguro que quieres eliminar esta tarea?")) {
+            return;
+        }
+        router.delete(route("task.destroy", task.id));
+    };
 
     //Para poder buscar los campos
     queryParams = queryParams || {};//El valor por defecto que toma al cargar la página es null
@@ -34,8 +39,8 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
 
     };
     const hasNoParams = Object.keys(queryParams || {}).length === 0;
-    const checkParams=(hasNoParams)=>{
-        hasNoParams= Object.keys(queryParams || {}).length === 0;
+    const checkParams = (hasNoParams) => {
+        hasNoParams = Object.keys(queryParams || {}).length === 0;
     }
 
     const onKeyPress = (name, e) => {
@@ -63,11 +68,11 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
 
 
 
-        
+
         <AuthenticatedLayout //Este componente solo se muestra si el que lo solicita es un usuario real y logueado
             header={
                 <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
-                    Tareas                    
+                    Tareas
                 </h2>
             }
         >
@@ -75,7 +80,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md">
+                        <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md shadow sm:rounded-lg">
                             {/* <pre>{JSON.stringify(tasks,undefined,2)}</pre> */}
                             {/*//? Esto devuelve un texto con el contenido simple, perfecto para json y revisar lo que devuelve el controlador*/}
 
@@ -153,7 +158,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3">
-                                            {(queryString!="") && <ResetButton link="task.index" queryString={queryString} />}
+                                            {(queryString != "") && <ResetButton link="task.index" queryString={queryString} />}
 
                                         </th>
                                     </tr>
@@ -237,14 +242,21 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                     <td className="px-3 py-2">{task.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                        {/* {console.log(task.createdFor.id)}
+                                                        {console.log(task)}
                                                         {console.log(auth.user.id)} 
                                                         {console.log(task.createdBy.id)} 
-                                                        */}
-                                                        {(task.createdFor.id==auth.user.id||task.createdBy.id==auth.user.id||auth.user.role=='admin') && <Link onClick={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
+
+                                                        {(task.createdFor.id == auth.user.id || task.createdBy.id == auth.user.id || auth.user.role == 'admin') && <Link onClick={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
                                                         </Link>}
-                                                        
+                                                        {(task.createdBy.id == auth.user.id || auth.user.role == 'admin') &&(<button
+                                                            onClick={() => deleteTask(task)}
+                                                            className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
+                                                        >
+                                                            Eliminar
+                                                        </button>)}
+
+                                                        {/* Solo si es el admin, el creador o el usuario asignado, se puede editar */}
                                                     </td>
                                                     {/* //^Parte de Actions */}
                                                     {/* //TODO: Hacer que solo el admin pueda ver el botón */}

@@ -17,10 +17,11 @@ class User extends Authenticatable implements MustVerifyEmail //Vamos a implemen
      *
      * @var list<string>
      */
-    protected $fillable = [ //TODO: Parte de roles
+    protected $fillable = [
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -46,14 +47,13 @@ class User extends Authenticatable implements MustVerifyEmail //Vamos a implemen
         ];
     }
     public function projects()
-{
-    return $this->belongsToMany(Project::class)->withTimestamps();
-}
+    {
+        return $this->belongsToMany(Project::class)->withTimestamps();
+    }
 
 
     public function project()
     {
         return $this->belongsTo(Project::class);
     }
-    
 }

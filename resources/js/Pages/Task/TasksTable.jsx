@@ -13,7 +13,7 @@ import {
 } from "@/constants.jsx";
 import ResetButton from "@/Pages/Task/ResetButton";
 
-export default function Index({ tasks, queryParams, project, isIn }) {
+export default function Index({ tasks, queryParams, project, isIn, isAdmin, isCreator }) {
   queryParams = queryParams ?? {};
   const { page, ...nonPageParams } = queryParams;
   const queryString = new URLSearchParams(nonPageParams).toString();
@@ -225,7 +225,7 @@ export default function Index({ tasks, queryParams, project, isIn }) {
                       <td className="px-4 py-2">{task.created_at}</td>
                       <td className="px-4 py-2">{task.due_date}</td>
                       <td className="px-4 py-2">
-                        {isIn && (
+                        {(isIn||isCreator||isAdmin)&& (
                           <>
                             <Link
                               href={route("task.edit", task.id)}
@@ -233,12 +233,15 @@ export default function Index({ tasks, queryParams, project, isIn }) {
                             >
                               Editar
                             </Link>
+                            {(isCreator||isAdmin)&& (
                             <button
                               onClick={() => deleteTask(task)}
                               className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
                             >
                               Eliminar
                             </button>
+                            )}
+                            {/* Solo el admin y creador pueden borrar la tarea */}
                           </>
                         )}
                       </td>

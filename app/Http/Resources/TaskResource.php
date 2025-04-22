@@ -28,7 +28,7 @@ class TaskResource extends JsonResource
                 'createdBy'=>new UserResource($this->createdBy),//? Esta linea devuelve(en vez de la clave en si) el nombre de usuario, pasando por la tabla usuario.
                 'updatedBy'=>new UserResource($this->updatedBy),//? Tecnicamente está configurado para que devuelva más parámetros
                 'fromProject'=>new ProjectResource($this->fromProject),//? Tecnicamente está configurado para que devuelva más parámetros
-                'createdFor'=>new ProjectResource($this->createdFor)
+                'createdFor'=>new UserResource($this->createdFor)
                 //^Estoy llamando a los metodos dentro de userResource, no a los campos. Aviso a futuro, esto es también en el modelo al llamar al método 
 
             ];

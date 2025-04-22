@@ -12,6 +12,9 @@ import ResetButton from "@/Pages/Project/ResetButton";
 
 export default function Index({ projects, queryParams = null, success, usersOnProject, auth }) {//Cada que llame a este componente, voy a tener que mandarle la lista de proyectos
 
+    // usersOnProject.some(user => user.id === auth.user.id))
+    // console.log(usersOnProject)
+    // console.log(auth.user.id)
     const hasNoParams = Object.keys(queryParams || {}).length === 0;
     const checkParams = (hasNoParams) => {
         hasNoParams = Object.keys(queryParams || {}).length === 0;
@@ -204,7 +207,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md"
                                                     key={project.id}>
                                                     <td className="px-3 py-2">
-                                                        {/* <img src={project.image} alt="" style={{ width: 60 }} /> */}
+                                                        <img src={("/storage/" + project.image)||project.image} alt="" className="rounded-lg w-12" />
                                                     </td>
                                                     {/* //! Hay un problema con las imágenes generadas por el seeder, hay que sutituirlas porquye la API de la página no funciona
                                             //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
@@ -225,12 +228,16 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
 
                                                     <td className="px-3 py-2 text-center">
                                                         {(
-                                                            (Array.isArray(usersOnProject) && usersOnProject.some(user => user.id === auth.user.id)) ||
+                                                            ((Array.isArray(usersOnProject) && usersOnProject.some(user => user.user_id === auth.user.id))&&(Array.isArray(usersOnProject) && usersOnProject.some(user => user.project_id === project.id))) ||
                                                             (project.createdBy.id === auth.user.id) ||
                                                             auth.user.role === 'admin'
+                                                            // Pequeña(Pero necesaria) interrupción para saber que hace esto: En pocas palabras, comprueba que 
+                                                            // En linea 1: El usuario se ha unido al proyecto
+                                                            // En linea 2:El usuario pueda ser el creador
+                                                            // En linea 3:El usuario pueda ser el administrador
                                                         ) && (
                                                                 <Link
-                                                                    onClick={route('project.edit', project.id)}
+                                                                    href={route('project.edit', project.id)}
                                                                     className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base"
                                                                 >
                                                                     Editar
