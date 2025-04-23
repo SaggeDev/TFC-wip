@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import {
   TASK_PRIORITY_CLASS_MAP,
   TASK_PRIORITY_TEXT_MAP,
@@ -27,7 +27,12 @@ export default function Show({ auth, success, task }) {
     }
   }, [auth.user.id, auth.user.role, task.data.createdBy.id, task.data.createdFor.id]);
 
-
+  const deleteTask = (task) => {
+    if (!window.confirm("Estas seguro que quieres eliminar esta tarea?")) {
+      return;
+    }
+    router.delete(route("task.destroy", task.data.id));
+  };
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -36,13 +41,21 @@ export default function Show({ auth, success, task }) {
           <h2 className="font-semibold text-xl text-blue-800 dark:text-gray-200 leading-tight">
             {`Tarea "${task.data.name}"`}
           </h2>
-          {(isIn||isAdmin||isCreator)&&<Link
+          {(isAdmin || isCreator) && <button
+            onClick={() => deleteTask(task)}
+            className="bg-red-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-red-600"
+          >
+            Eliminar
+          </button>
+          }
+          {(isIn || isAdmin || isCreator) && <Link
             href={route("task.edit", task.data.id)}
             className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-amber-600"
           >
             Editar
           </Link>
           }
+          
         </div>
       }
     >

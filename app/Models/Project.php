@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
+
+  
     /** @use HasFactory<\Database\Factories\ProjectFactory> */
     use HasFactory;
     public function tasks()
@@ -19,7 +21,7 @@ class Project extends Model
     return $this->belongsToMany(User::class)->withTimestamps();
 }
 
-    protected $fillable = ['name', 'description', 'due_date', 'status', 'image', 'project_link'];
+    protected $fillable = ['name', 'description', 'due_date', 'status', 'image', 'project_link','created_by','updated_by'];
 
     public function createdBy()
     {

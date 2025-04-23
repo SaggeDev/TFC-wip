@@ -79,13 +79,18 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
 
         <AuthenticatedLayout //Este componente solo se muestra si el que lo solicita es un usuario real y logueado
             header={
-                <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
-                    Proyectos
-                </h2>
+                <div>
+                    <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
+                        Proyectos
+                    </h2>
+                    <br/>
+                    <Link href={route('project.create')} className="bg-green-600 text-white p-1 rounded-md"> Crear Proyecto
+                    </Link>
+                </div>
             }
         >
             <Head title='Proyectos' ></Head>
-            {success&&<ConfirmationAlert text={success}/>}
+            {success && <ConfirmationAlert text={success} />}
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">

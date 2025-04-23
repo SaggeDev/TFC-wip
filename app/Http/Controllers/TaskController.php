@@ -164,8 +164,8 @@ class TaskController extends Controller
         if ($task->image) {
             Storage::disk('public')->deleteDirectory(dirname($task->image));
         }
-        return back()
-            ->with('success', "La tarea [" . $name . "] ha sido eliminada con éxito");
+        return to_route('task.index')
+            ->with('success', "La tarea \"$task->name\" ha sido eliminada con éxito");
     }
     public function myTasks()
     {

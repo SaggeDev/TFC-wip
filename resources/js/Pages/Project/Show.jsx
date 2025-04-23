@@ -32,6 +32,15 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
       setIsAdmin(true);
     }
   }
+  const deleteProject = (project) => {
+    if (!window.confirm("Estas seguro que quieres eliminar este proyecto?")) {
+        return;
+    }
+    if (!window.confirm("También estarás borrando las tareas y archivos. Esta acción es completamente irreversible, estás seguro?")) {
+        return;
+    }
+    router.delete(route("project.destroy", project.id));
+};
 
   return (
 
@@ -43,6 +52,13 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
           <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
             Proyecto: {project.data.name}
           </h2>
+          {(isAdmin || isCreator) && <button
+            onClick={() => deleteProject(project.data)}
+            className="bg-red-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-red-600"
+          >
+            Eliminar
+          </button>
+          }
           {(isIn || isCreator || isAdmin) && <Link
             href={route("project.edit", { project: project.data.id })}
             className="bg-amber-500 py-1.5 px-4 text-white rounded shadow-md transition hover:bg-amber-600"

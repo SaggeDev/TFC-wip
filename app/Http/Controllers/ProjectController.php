@@ -90,8 +90,9 @@ class ProjectController extends Controller
             }
         }
         Project::create($data);
+        $newProject = Project::latest()->first();
 
-        return to_route('project.show', $data['id'])
+        return to_route('project.show',$newProject->id)
             ->with('success', 'Proyecto creado exitosamente');
     }
 
@@ -178,7 +179,7 @@ class ProjectController extends Controller
         if ($project->image) {
             Storage::disk('public')->deleteDirectory(dirname($project->image));
         }
-        return back()
+        return to_route('project.index')
             ->with('success', "El proyecto " . $name . " ha sido borrado exitosamente junto con sus tareas");
     }
 }
