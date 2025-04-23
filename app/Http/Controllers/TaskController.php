@@ -78,7 +78,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $projects = Project::query()->orderBy('id', 'asc')->get();
         $users = User::query()->orderBy('name', 'asc')->get();
 
         return inertia("Task/Create", [
@@ -92,7 +92,9 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
+        
         $data = $request->validated();
+        // dd($request);
         /** @var $image \Illuminate\Http\UploadedFile */
         $image = $data['image'] ?? null;
         $data['created_by'] = Auth::id();

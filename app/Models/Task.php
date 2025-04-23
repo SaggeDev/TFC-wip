@@ -21,7 +21,8 @@ class Task extends Model
         'due_date',
         'assigned_user_id',
         'project_id',
-        'updated_by'
+        'updated_by',
+        'created_by'
     ];
 
     public function fromProject()

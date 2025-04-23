@@ -72,9 +72,14 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
 
         <AuthenticatedLayout //Este componente solo se muestra si el que lo solicita es un usuario real y logueado
             header={
-                <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
-                    Tareas
-                </h2>
+                <div>
+                    <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
+                        Tareas
+                    </h2>
+                    <br/>
+                    <Link href={route('task.create')} className="bg-green-600 text-white p-1 rounded-md"> Crear Tarea
+                    </Link>
+                </div>
             }
         >
             <Head title='Tareas' ></Head>

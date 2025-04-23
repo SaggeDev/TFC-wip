@@ -5,22 +5,18 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { TASK_STATUS_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_PRIORITY_CLASS_MAP } from "@/constants.jsx";
 
-
-export default function Create({ auth, task, projects, users }) {
+export default function Create({ auth, projects, users }) {
   const { data, setData, post, errors, reset } = useForm({
-    image: task.data.image,
-    name: task.data.name || "",
-    status: task.data.status || "",
-    description: task.data.description || "",
-    due_date: task.data.due_date || "",
-    project_id: task.data.fromProject.id || "",
-    priority: task.data.priority || "",
-    assigned_user_id: task.data.createdFor.id || "",
-    task_link:task.data.task_link||"",
-
-    _method: "PUT",
+    image: "",
+    name: "",
+    status: "",
+    description: "",
+    due_date: "",
+    project_id: "",
+    priority: "",
+    assigned_user_id: "",
+    task_link: ""
   });
 
   const onSubmit = (e) => {
@@ -33,13 +29,11 @@ export default function Create({ auth, task, projects, users }) {
       }
     });
 
-    post(route("task.update", task.data.id), {
+    post(route("task.store"), {
       data: formData,
-      forceFormData: true,
+      forceFormData: true
     });
   };
-
-  console.log(task)
 
   return (
     <AuthenticatedLayout
@@ -47,12 +41,12 @@ export default function Create({ auth, task, projects, users }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-blue-800 dark:text-gray-200 leading-tight">
-            Editar tarea: {task.data.name}
+            Nueva tarea
           </h2>
         </div>
       }
     >
-      <Head title="Editar tarea" />
+      <Head title="Crear tarea" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -61,38 +55,16 @@ export default function Create({ auth, task, projects, users }) {
               onSubmit={onSubmit}
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             >
-              {task.data.image && (
-                <div className="mb-4">
-                  <img
-                    src={"/storage/" + task.data.image}
-
-                    className="w-64"
-                  />
-                </div>
-              )}
               <div>
-                <div className="mt-4">
-                  <InputLabel htmlFor="image" value="Imagen:" />
-                  <TextInput
-                    id="image"
-                    type="file"
-                    name="image"
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData("image", e.target.files[0])}
-                  />
-                  <InputError message={errors.image} className="mt-2" />
-                </div>
-                <br />
-                <InputLabel htmlFor="task_project_id" value="Proyecto al que pertenece:" />
+                <InputLabel htmlFor="task_project_id" value="Proyecto" />
 
                 <SelectInput
                   name="project_id"
                   id="task_project_id"
-                  value={data.project_id}
                   className="mt-1 block w-full"
                   onChange={(e) => setData("project_id", e.target.value)}
                 >
-                  <option value="">...</option>
+                  <option value="">Seleccionar proyecto</option>
                   {projects.data.map((project) => (
                     <option value={project.id} key={project.id}>
                       ({project.id}) {project.name}
@@ -102,9 +74,19 @@ export default function Create({ auth, task, projects, users }) {
 
                 <InputError message={errors.project_id} className="mt-2" />
               </div>
-
               <div className="mt-4">
-                <InputLabel htmlFor="task_name" value="Nombre:" />
+                <InputLabel htmlFor="task_image_path" value="Foto de la tarea" />
+                <TextInput
+                  id="task_image_path"
+                  type="file"
+                  name="image"
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("image", e.target.files[0])}
+                />
+                <InputError message={errors.image} className="mt-2" />
+              </div>
+              <div className="mt-4">
+                <InputLabel htmlFor="task_name" value="Nombre" />
 
                 <TextInput
                   id="task_name"
@@ -121,7 +103,7 @@ export default function Create({ auth, task, projects, users }) {
               <div className="mt-4">
                 <InputLabel
                   htmlFor="task_description"
-                  value="Descripción de la tarea:"
+                  value="Descripción"
                 />
 
                 <TextAreaInput
@@ -149,12 +131,11 @@ export default function Create({ auth, task, projects, users }) {
                 <InputError message={errors.due_date} className="mt-2" />
               </div>
               <div className="mt-4">
-                <InputLabel htmlFor="task_status" value="Estado actual:" />
+                <InputLabel htmlFor="task_status" value="Estado inicial" />
 
                 <SelectInput
                   name="status"
                   id="task_status"
-                  value={data.status}
                   className="mt-1 block w-full"
                   onChange={(e) => setData("status", e.target.value)}
                 >
@@ -168,12 +149,11 @@ export default function Create({ auth, task, projects, users }) {
               </div>
 
               <div className="mt-4">
-                <InputLabel htmlFor="task_priority" value="Prioridad actual:" />
+                <InputLabel htmlFor="task_priority" value="Prioridad inicial" />
 
                 <SelectInput
                   name="priority"
                   id="task_priority"
-                  value={data.priority}
                   className="mt-1 block w-full"
                   onChange={(e) => setData("priority", e.target.value)}
                 >
@@ -202,17 +182,16 @@ export default function Create({ auth, task, projects, users }) {
               <div className="mt-4">
                 <InputLabel
                   htmlFor="task_assigned_user"
-                  value="Usuario asignado:"
+                  value="Asignar a:"
                 />
 
                 <SelectInput
                   name="assigned_user_id"
                   id="task_assigned_user"
-                  value={data.assigned_user_id}
                   className="mt-1 block w-full"
                   onChange={(e) => setData("assigned_user_id", e.target.value)}
                 >
-                  <option value="">Ninguno</option>
+                  <option value="">Nadie</option>
                   {users.data.map((user) => (
                     <option value={user.id} key={user.id}>
                       {user.name}
@@ -228,13 +207,13 @@ export default function Create({ auth, task, projects, users }) {
 
               <div className="mt-4 text-right">
                 <Link
-                  href={route("task.show", task.data.id)}
+                  href={route("task.index")}
                   className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                 >
                   Cancelar
                 </Link>
                 <button className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-amber-600">
-                  Guardar cambios
+                  Crear
                 </button>
               </div>
             </form>
