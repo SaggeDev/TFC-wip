@@ -21,7 +21,7 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
       { user_id: user_id }
     );
   };
-  console.log(project.data.createdBy)
+  console.log(project.data)
   if (auth.user.id === project.data.createdBy.id) {
     if (!isCreator) {
       setIsCreator(true);
@@ -90,7 +90,7 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
                 </div>
                 <div className="space-y-4">
                   <Info label="Fecha límite" value={project.data.due_date} />
-                  <Info label="Creación" value={project.data.created_at} />
+                  <Info label="Creado en" value={project.data.created_at} />
                   <Info label="Creado por" value={(project.data.createdBy.name) + " (" + (project.data.createdBy.email) + ")"} />
                 </div>
                 <div>
@@ -136,6 +136,12 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
                   Descripción del proyecto
                 </label>
                 <p className="leading-relaxed">{project.data.description}</p>
+              </div>
+              <div className="pt-6">
+                <label className="block text-lg font-bold mb-1">
+                  Repositorio/Drive del proyecto
+                </label>
+                <Link onClick={() => window.open(project.data.project_link, '_blank')} className="leading-relaxed text-blue-900 hover:text-blue-600">{project.data.project_link}</Link>
               </div>
             </div>
           </div>

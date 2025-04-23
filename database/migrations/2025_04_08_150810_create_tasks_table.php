@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('priority');
             $table->string('task_link')->nullable();
             $table->timestamp('due_date')->nullable();
-            $table->foreignId('assigned_user_id')->constrained('users');//A quien se la han mandado, relación 1-1  
+            $table->foreignId('assigned_user_id')->nullable()->constrained('users');//A quien se la han mandado, relación 1-1  
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');//Al crear el proyecto, saldra updated by el creador directamente
             $table->foreignId('project_id')->constrained('projects');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
+use App\Models\Task;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Facades\Auth;
@@ -85,14 +86,13 @@ class ProjectController extends Controller
         $data['updated_by'] = Auth::id();
         if ($image) {
             if ($image instanceof \Illuminate\Http\UploadedFile) {
-                //& Condicional aplicado en 20/04/2025 debido a prevenciones de seguridad
                 $data['image'] = $image->store('project/' . Str::random(), 'public');
             }
         }
         Project::create($data);
 
-        return to_route('project.index')
-            ->with('success', 'Project was created');
+        return to_route('project.show', $data['id'])
+            ->with('success', 'Proyecto creado exitosamente');
     }
 
     /**
@@ -170,11 +170,15 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $name = $project->name;
+        $tasks[] = $project->tasks();
+        foreach ($tasks as $task) {
+            $task->delete();
+        }
         $project->delete();
         if ($project->image) {
             Storage::disk('public')->deleteDirectory(dirname($project->image));
         }
-        return to_route('project.show', $project->id)
-            ->with('success', "El proyecto \"$name\" ha sido borrado con éxito");
+        return back()
+            ->with('success', "El proyecto " . $name . " ha sido borrado exitosamente junto con sus tareas");
     }
 }

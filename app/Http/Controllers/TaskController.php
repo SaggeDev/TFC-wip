@@ -16,8 +16,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class TaskController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -98,9 +101,10 @@ class TaskController extends Controller
             $data['image'] = $image->store('task/' . Str::random(), 'public');
         }
         Task::create($data);
+        $newTask = Task::latest()->first();
 
-        return to_route('task.index')
-            ->with('success', 'Task was created');
+        return to_route('task.show',$newTask->id)
+            ->with('success', 'La tarea ha sido creada correctamente');
     }
 
     /**
@@ -118,7 +122,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $projects = Project::query()->orderBy('id', 'asc')->get();
         $users = User::query()->orderBy('name', 'asc')->get();
 
         return inertia("Task/Edit", [
@@ -134,18 +138,20 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         $data = $request->validated();
-        $image = $data['image'] ?? null;
+        $image = $request->file('image') ;
         $data['updated_by'] = Auth::id();
         if ($image) {
             if ($task->image) {
                 Storage::disk('public')->deleteDirectory(dirname($task->image));
             }
             $data['image'] = $image->store('task/' . Str::random(), 'public');
+        }else{
+            $data['image'] = $task->image;
         }
         $task->update($data);
 
-        return to_route('task.index')
-            ->with('success', "Task \"$task->name\" was updated");
+        return to_route('task.show',$task->id)
+            ->with('success', "La tarea \"$task->name\" ha sido modificada con éxito");
     }
 
     /**
@@ -158,10 +164,9 @@ class TaskController extends Controller
         if ($task->image) {
             Storage::disk('public')->deleteDirectory(dirname($task->image));
         }
-        return to_route('project.show', ['project' => $task->fromProject])
+        return back()
             ->with('success', "La tarea [" . $name . "] ha sido eliminada con éxito");
-        }
-
+    }
     public function myTasks()
     {
         $user = Auth::user();

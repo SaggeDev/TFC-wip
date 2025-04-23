@@ -7,6 +7,8 @@ import TableHeading from "@/Components/TableHeading"
 import { useState, useEffect } from "react";
 import { PROJECT_STATUS_TEXT_MAP, PROJECT_STATUS_CLASS_MAP } from "@/constants.jsx";
 import ResetButton from "@/Pages/Project/ResetButton";
+import ConfirmationAlert from "@/Components/ConfirmationAlert"
+
 
 
 
@@ -60,6 +62,16 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
         }
         router.get(route("project.index"), queryParams);
     };
+
+    const deleteProject = (project) => {
+        if (!window.confirm("Estas seguro que quieres eliminar este proyecto?")) {
+            return;
+        }
+        if (!window.confirm("También estarás borrando las tareas y archivos. Esta acción es completamente irreversible, estás seguro?")) {
+            return;
+        }
+        router.delete(route("project.destroy", project.id));
+    };
     return (
 
 
@@ -73,6 +85,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
             }
         >
             <Head title='Proyectos' ></Head>
+            {success&&<ConfirmationAlert text={success}/>}
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
@@ -207,7 +220,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md"
                                                     key={project.id}>
                                                     <td className="px-3 py-2">
-                                                        <img src={("/storage/" + project.image)||project.image} alt="" className="rounded-lg w-12" />
+                                                        <img src={("/storage/" + project.image) || project.image} alt="" className="rounded-lg w-12" />
                                                     </td>
                                                     {/* //! Hay un problema con las imágenes generadas por el seeder, hay que sutituirlas porquye la API de la página no funciona
                                             //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
@@ -228,7 +241,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
 
                                                     <td className="px-3 py-2 text-center">
                                                         {(
-                                                            ((Array.isArray(usersOnProject) && usersOnProject.some(user => user.user_id === auth.user.id))&&(Array.isArray(usersOnProject) && usersOnProject.some(user => user.project_id === project.id))) ||
+                                                            ((Array.isArray(usersOnProject) && usersOnProject.some(user => user.user_id === auth.user.id)) && (Array.isArray(usersOnProject) && usersOnProject.some(user => user.project_id === project.id))) ||
                                                             (project.createdBy.id === auth.user.id) ||
                                                             auth.user.role === 'admin'
                                                             // Pequeña(Pero necesaria) interrupción para saber que hace esto: En pocas palabras, comprueba que 
@@ -243,6 +256,21 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                                     Editar
                                                                 </Link>
                                                             )}
+                                                        {(
+                                                            ((Array.isArray(usersOnProject) && usersOnProject.some(user => user.user_id === auth.user.id)) && (Array.isArray(usersOnProject) && usersOnProject.some(user => user.project_id === project.id))) ||
+                                                            (project.createdBy.id === auth.user.id) ||
+                                                            auth.user.role === 'admin'
+                                                            // Pequeña(Pero necesaria) interrupción para saber que hace esto: En pocas palabras, comprueba que 
+                                                            // En linea 1: El usuario se ha unido al proyecto
+                                                            // En linea 2:El usuario pueda ser el creador
+                                                            // En linea 3:El usuario pueda ser el administrador
+                                                        ) && (project.createdBy.id == auth.user.id || auth.user.role == 'admin') && (<button
+                                                            onClick={() => deleteProject(project)}
+                                                            className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
+                                                        >
+                                                            Eliminar
+                                                        </button>)}
+
                                                     </td>
 
                                                     {/* //^Parte de Actions */}

@@ -16,7 +16,6 @@ export default function Create({ auth, project, success }) {
     project_link: project.data.project_link || "",
     _method: "PUT",
   });
-  console.log(project.data.image)
   const onSubmit = (e) => {
     e.preventDefault();
   
@@ -27,8 +26,7 @@ export default function Create({ auth, project, success }) {
         if (value instanceof File) {
           formData.append(key, value);
         }
-      } else {
-      }
+      } 
     });
   
     post(route("project.update", project.data.id), {
