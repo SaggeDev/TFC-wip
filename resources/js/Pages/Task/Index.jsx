@@ -96,7 +96,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                 {/*Inicio menu/índice de tabla */}
                                 <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                     <tr className="text-nowrap dark:bg-gray-800  ">
-                                        <th className="px-3 py-3 ">
+                                        <th className="px-1 py-3 ">
                                             <SelectInput
                                                 className="w-auto bg-blue-100"
                                                 defaultValue={queryParams.priority}
@@ -137,9 +137,9 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                 }}
                                             />
                                         </th>
-                                        <th className="px-3 py-3">
+                                        <th className=" py-3">
                                             <SelectInput
-                                                className="w-auto bg-blue-100"
+                                                className="w-24 bg-blue-100"
                                                 defaultValue={queryParams.status}
                                                 onChange={(e) =>
                                                     searchFieldChanged("status", e.target.value)
@@ -231,7 +231,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md"
                                                     key={task.id}>
                                                     <div className="px-1 py-1 text-center content-center">
-                                                        <td className={"px-2 py-1  rounded-lg text-white  " + TASK_PRIORITY_CLASS_MAP[task.priority]}>{TASK_PRIORITY_TEXT_MAP[task.priority]}</td>
+                                                        <div className={" py-1  rounded-lg text-white w-full  " + TASK_PRIORITY_CLASS_MAP[task.priority]}>{TASK_PRIORITY_TEXT_MAP[task.priority]}</div>
                                                     </div>
                                                     {/* //! Hay un problema con las imágenes generadas por el seeder, hay que sutituirlas porquye la API de la página no funciona
                                             //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
@@ -266,7 +266,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                         {/* Solo si es el admin, el creador o el usuario asignado, se puede editar */}
                                                     </td>
                                                     {/* //^Parte de Actions */}
-                                                    {/* //TODO: Hacer que solo el admin pueda ver el botón */}
+                          
                                                 </tr>
                                             )
                                         })}

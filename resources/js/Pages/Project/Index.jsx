@@ -222,7 +222,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                     {
                                         projects.data.map((project) => {//? Una arrow function que hace algo parecido a un foreach
                                             return (
-                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md"
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md "
                                                     key={project.id}>
                                                     <td className="px-3 py-2">
                                                         <img src={("/storage/" + project.image) || project.image} alt="" className="rounded-lg w-12" />
@@ -236,7 +236,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                         // ?1. Estoy redirigiendo de mi página a mi página
                                                         // ?2. Quiero que ocurran los eventos default */}
                                                     </td>
-                                                    <div className="px-1 py-1 content-center text-center items-center">
+                                                    <div className="px-1 py-2 content-center text-center items-center">
                                                         <div className={"px-0 py-1 rounded-lg text-white  w-24  " + PROJECT_STATUS_CLASS_MAP[project.status]}>{PROJECT_STATUS_TEXT_MAP[project.status]}</div>
                                                     </div>
                                                     <td className="px-3 py-2">{project.createdBy.name}</td>
