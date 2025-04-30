@@ -1,10 +1,9 @@
-import { Head, Link, router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
-import { useState, useEffect } from "react";
-import { Button } from "@headlessui/react";
+
 import {
   TASK_STATUS_TEXT_MAP,
   TASK_STATUS_CLASS_MAP,
@@ -190,15 +189,15 @@ export default function Index({ tasks, queryParams, project, isIn, isAdmin, isCr
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md"
                       key={task.id}
                     >
-                      <td className="px-2 py-1 text-center">
-                        <span
+                      <td className="px-2 py-1 text-center ">
+                        <div
                           className={
-                            "px-2 py-1 rounded-lg text-white " +
+                            " py-1 rounded-lg text-white w-full" +
                             TASK_PRIORITY_CLASS_MAP[task.priority]
                           }
                         >
                           {TASK_PRIORITY_TEXT_MAP[task.priority]}
-                        </span>
+                        </div>
                       </td>
                       <td className="px-3 py-2 text-center">{task.id}</td>
                       <td className="px-3 py-2 text-center">
@@ -211,15 +210,15 @@ export default function Index({ tasks, queryParams, project, isIn, isAdmin, isCr
                       <td className="px-3 py-2 !text-blue-900 hover:underline">
                         <Link href={route("task.show", task.id)} >{task.name}</Link>
                       </td>
-                      <td className="px-2 py-1 text-center">
-                        <span
+                      <td className="px-10 py-1 text-center">
+                        <div
                           className={
-                            "px-2 py-1 rounded-lg text-white " +
+                            " py-1 rounded-lg text-white w-full " +
                             TASK_STATUS_CLASS_MAP[task.status]
                           }
                         >
                           {TASK_STATUS_TEXT_MAP[task.status]}
-                        </span>
+                        </div>
                       </td>
                       <td className="px-4 py-2">{task.createdFor.name}</td>
                       <td className="px-4 py-2">{task.created_at}</td>

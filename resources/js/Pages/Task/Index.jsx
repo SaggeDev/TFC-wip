@@ -119,7 +119,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                 }
                                                 onKeyPress={(e) => {
                                                     onKeyPress("id", e);
-                                                    getParams();
+                                                    // getParams();
                                                 }}
                                             />
                                         </th>
@@ -133,7 +133,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                 }
                                                 onKeyPress={(e) => {
                                                     onKeyPress("name", e);
-                                                    getParams();
+                                                    // getParams();
                                                 }}
                                             />
                                         </th>
@@ -157,9 +157,9 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                 defaultValue={queryParams.created_by}
                                                 placeholder="Proyecto"
                                                 onBlur={(e) =>
-                                                    searchFieldChanged("created_by", e.target.value)
+                                                    searchFieldChanged("fromProject", e.target.value)
                                                 }
-                                                onKeyPress={(e) => onKeyPress("created_by", e)}
+                                                onKeyPress={(e) => onKeyPress("fromProject", e)}
                                             />
                                         </th>
                                         <th className="px-3 py-3"></th>
@@ -240,7 +240,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                         <Link href={route("task.show", task.id)} >{task.name}</Link>
                                                     </td>
                                                     <div className="px-1 py-1 ">
-                                                        <td className={"px-2 py-1 rounded-lg text-white w-50 text-center content-center " + TASK_STATUS_CLASS_MAP[task.status]}>{TASK_STATUS_TEXT_MAP[task.status]}</td>
+                                                        <div className={" py-1 rounded-lg text-white w-full text-center content-center " + TASK_STATUS_CLASS_MAP[task.status]}>{TASK_STATUS_TEXT_MAP[task.status]}</div>
                                                     </div>
                                                     <td className="px-3 py-2 !text-blue-900 hover:underline">
                                                         <Link href={route("project.show", task.fromProject)} >{task.fromProject.name}</Link>

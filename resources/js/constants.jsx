@@ -24,7 +24,7 @@ export const TASK_PRIORITY_CLASS_MAP = {
   urgent: " bg-red-600",
 };
 export const TASK_PRIORITY_TEXT_MAP = {
-  low: "Baja",
-  high: "Alta",
+  low:    " Baja ",
+  high:   " Alta ",
   urgent: "Urgente",
 };

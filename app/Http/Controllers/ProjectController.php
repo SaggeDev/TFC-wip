@@ -37,6 +37,9 @@ class ProjectController extends Controller
         if (request("status")) {
             $query->where("status", request("status"));
         }
+        if (request("id")) {
+            $query->where("id", request("id"));
+        }
 
         if (request('created_by')) {
             $query->whereHas('createdBy', function ($q): void {

@@ -114,7 +114,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                 }
                                                 onKeyPress={(e) => {
                                                     onKeyPress("id", e);
-                                                    getParams();
+                                                    // getParams();
                                                 }}
                                             />
                                         </th>
@@ -128,7 +128,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                 }
                                                 onKeyPress={(e) => {
                                                     onKeyPress("name", e);
-                                                    getParams();
+                                                    // getParams();
                                                 }}
                                             />
                                         </th>
@@ -236,9 +236,8 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                         // ?1. Estoy redirigiendo de mi página a mi página
                                                         // ?2. Quiero que ocurran los eventos default */}
                                                     </td>
-                                                    {/* //TODO Poner el Link a la página del proyecto en el nombre */}
-                                                    <div className="px-1 py-1 text-center content-center">
-                                                        <td className={"px-2 py-1 rounded-lg text-white  " + PROJECT_STATUS_CLASS_MAP[project.status]}>{PROJECT_STATUS_TEXT_MAP[project.status]}</td>
+                                                    <div className="px-1 py-1 content-center text-center items-center">
+                                                        <div className={"px-0 py-1 rounded-lg text-white  w-24  " + PROJECT_STATUS_CLASS_MAP[project.status]}>{PROJECT_STATUS_TEXT_MAP[project.status]}</div>
                                                     </div>
                                                     <td className="px-3 py-2">{project.createdBy.name}</td>
                                                     <td className="px-3 py-2">{project.created_at}</td>
@@ -278,8 +277,6 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
 
                                                     </td>
 
-                                                    {/* //^Parte de Actions */}
-                                                    {/* //TODO: Hacer que solo el admin pueda ver el botón */}
                                                 </tr>
                                             )
                                         })}

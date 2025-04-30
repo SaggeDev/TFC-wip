@@ -47,9 +47,9 @@ class TaskController extends Controller
             $query->where("status", request("status"));
         }
         
-        if (request('created_by')) {
-            $query->whereHas('createdBy', function ($q): void {
-                $q->where('name','like',  '%' . request('created_by') . '%');
+        if (request('fromProject')) {
+            $query->whereHas('fromProject', function ($q): void {
+                $q->where('name','like',  '%' . request('fromProject') . '%');
             });
         }
         // if (request('assigned_user_id')) {
