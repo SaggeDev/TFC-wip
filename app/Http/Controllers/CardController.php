@@ -11,18 +11,14 @@ class CardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function check($hexKey)
+    public function checkINO($hexKey)
     {
         $card = Card::where('key', $hexKey)->first();
         //^Solo me interesa el primero, dado que puede haber varios
         $user = User::where('id', $card->user_owner_id)->first();
         // return ["card" => $card, "user" => $user];
         if($user){
-            match($user) {
-                "user" => ["user" => $user],
-                default => null,
-            };
-            return $user;
+            return app('App\Http\Controllers\TimeLogController')->registerINO($user);
         }
         
     }

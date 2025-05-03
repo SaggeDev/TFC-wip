@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\TimeLog;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TimeLogController extends Controller
 {
+
+    public function registerINO(User $user)
+    {
+        
+    }
     /**
      * Display a listing of the resource.
      */

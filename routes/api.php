@@ -11,7 +11,7 @@ Route::get('checkNFC/{hexKey}/{INOSecret}', function($hexKey, $INOSecret) {
 
     foreach ($users as $user) {
         if (Hash::check($INOSecret, $user->password)) {
-            return app('App\Http\Controllers\CardController')->check($hexKey);
+            return app('App\Http\Controllers\CardController')->checkINO($hexKey);
         }
     }
 
