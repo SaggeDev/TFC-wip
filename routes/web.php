@@ -23,7 +23,7 @@ Route::prefix('api')->group(function () {
 });
 
 Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha iniciado sesión, puede acceder a las rutas
-    //*2.Usuario pasa por el middleware para poder acceder, si es digno(Mjölnir a mi) pasa a la vista Dashboard administrada por inertia
+    //*2.Usuario pasa por el middleware para poder acceder, si es digno pasa a la vista Dashboard administrada por inertia
     Route::get('/dashboard', fn ()=> Inertia::render('Dashboard'))
         ->name('dashboard')//Si recibe la ruta, devuelve el renderizado del componente de inertia
     ;

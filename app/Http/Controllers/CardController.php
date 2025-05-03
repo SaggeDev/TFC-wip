@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Card;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -10,6 +11,21 @@ class CardController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function check($hexKey)
+    {
+        $card = Card::where('key', $hexKey)->first();
+        //^Solo me interesa el primero, dado que puede haber varios
+        $user = User::where('id', $card->user_owner_id)->first();
+        // return ["card" => $card, "user" => $user];
+        if($user){
+            match($user) {
+                "user" => ["user" => $user],
+                default => null,
+            };
+            return $user;
+        }
+        
+    }
     public function index()
     {
         //

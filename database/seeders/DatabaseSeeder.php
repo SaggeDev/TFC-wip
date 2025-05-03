@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Card;
 use App\Models\User;
 use App\Models\Project;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -29,6 +30,17 @@ class DatabaseSeeder extends Seeder
             'password'=>bcrypt('123.123.123'),
             'email_verified_at'=>time(),
             'role'=>'user'
+        ]);
+        User::factory()->create([
+            'name' => 'Arduino UNO R4 WIFI 123',
+            'email' => 'ELADMINISTRADOR@gmail.com',
+            'password'=>bcrypt('ArduinoKey'),
+            'email_verified_at'=>time(),
+            'role'=>'arduino'
+        ]);
+        Card::factory()->create([
+            'user_owner_id' => 2,
+            'key' => '44:5C:1:4'
         ]);
 
         Project::factory()->count(30)->hasTasks(30)->create();//?Crea 30 proyectos con 30 tareas cada uno
