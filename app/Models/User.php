@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail //Vamos a implemen
         'name',
         'email',
         'password',
-        'role'
+        'role'//& AVISO A FUTURO: Esto puede causar errores gravisimos de seguridad, de modo que un usuario pueda hacer un curl y auto-ponerse como admin. De momento está por vagancia ༼ つ ◕_◕ ༽つ.
     ];
 
     /**
@@ -56,4 +56,9 @@ class User extends Authenticatable implements MustVerifyEmail //Vamos a implemen
     {
         return $this->belongsTo(Project::class);
     }
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
+
 }

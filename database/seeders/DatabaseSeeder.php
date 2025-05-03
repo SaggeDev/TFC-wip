@@ -23,6 +23,13 @@ class DatabaseSeeder extends Seeder
             'email_verified_at'=>time(),
             'role'=>'admin'
         ]);
+        User::factory()->create([
+            'name' => 'Alex',
+            'email' => 'alexollemail@gmail.com',
+            'password'=>bcrypt('123.123.123'),
+            'email_verified_at'=>time(),
+            'role'=>'user'
+        ]);
 
         Project::factory()->count(30)->hasTasks(30)->create();//?Crea 30 proyectos con 30 tareas cada uno
     }
