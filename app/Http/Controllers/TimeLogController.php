@@ -26,12 +26,24 @@ class TimeLogController extends Controller
                 'entry_time' => $now,
                 'work_type' => 'at_office',
                 'altered' => 0
-            ]);     
+            ]);
         }
         $lastTimeLog = TimeLog::where('user_id', $user->id)
             ->orderBy('id', 'desc')
             ->first();
-        return ["success"=>true,"timeLog" => $lastTimeLog,"user"=>$user];
+        $data = [
+            "success" => true,
+            "timeLog" => $lastTimeLog,
+            "user" => $user
+        ];
+        $json = json_encode($data);
+        header('Content-Type: application/json');
+        header('Content-Length: ' . strlen($json));
+        header('Connection: close');
+
+        echo $json;
+        flush();
+        exit;
     }
     /**
      * Display a listing of the resource.

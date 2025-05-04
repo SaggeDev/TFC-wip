@@ -15,12 +15,19 @@ class CardController extends Controller
     {
         $card = Card::where('key', $hexKey)->first();
         //^Solo me interesa el primero, dado que puede haber varios
-        $user = User::where('id', $card->user_owner_id)->first();
-        // return ["card" => $card, "user" => $user];
-        if($user){
-            return app('App\Http\Controllers\TimeLogController')->registerINO($user);
+        if ($card) {
+            $user = User::where('id', $card->user_owner_id)->first();
+            // return ["card" => $card, "user" => $user];
+            if ($user) {
+                return app('App\Http\Controllers\TimeLogController')->registerINO($user);
+            } else {
+                return ["success" => false, "error" => "No se reconoce la tarjeta"];
+            }
         }
-        
+        else{
+            return ["success" => false, "error" => "No se reconoce la tarjeta"];
+
+        }
     }
     public function index()
     {
