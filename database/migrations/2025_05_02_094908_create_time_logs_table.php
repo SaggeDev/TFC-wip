@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('time_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users','id');
-            $table->time('entry_time');
-            $table->time('exit_time')->nullable();
+            $table->timestamp('entry_time')->useCurrent()->nullable();
+            $table->timestamp('exit_time')->nullable();
             $table->enum('work_type',['home_office','at_office']);
             $table->boolean('altered')->default(false);
             $table->timestamps();

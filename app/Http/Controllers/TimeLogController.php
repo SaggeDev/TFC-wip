@@ -5,18 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\TimeLog;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TimeLogController extends Controller
 {
 
     public function registerINO(User $user)
     {
-        
+        $now = Carbon::now()->setMicrosecond(0);
+        $lastTimeLog = TimeLog::where('user_id', $user->id)
+            ->orderBy('id', 'desc')
+            ->first();
+        if ($lastTimeLog != null && $lastTimeLog->entry_time != null && $lastTimeLog->exit_time == null) {
+            $lastTimeLog->exit_time = $now;
+            $lastTimeLog->work_type = 'at_office';
+            $lastTimeLog->save();
+        } else {
+            TimeLog::create([
+                'user_id' => $user->id,
+                'entry_time' => $now,
+                'work_type' => 'at_office',
+                'altered' => 0
+            ]);     
+        }
+        $lastTimeLog = TimeLog::where('user_id', $user->id)
+            ->orderBy('id', 'desc')
+            ->first();
+        return ["success"=>true,"timeLog" => $lastTimeLog,"user"=>$user];
     }
     /**
      * Display a listing of the resource.
      */
-    
+
     public function index()
     {
         //
