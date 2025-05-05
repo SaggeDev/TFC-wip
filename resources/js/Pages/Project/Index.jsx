@@ -264,10 +264,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                             ((Array.isArray(usersOnProject) && usersOnProject.some(user => user.user_id === auth.user.id)) && (Array.isArray(usersOnProject) && usersOnProject.some(user => user.project_id === project.id))) ||
                                                             (project.createdBy.id === auth.user.id) ||
                                                             auth.user.role === 'admin'
-                                                            // Pequeña(Pero necesaria) interrupción para saber que hace esto: En pocas palabras, comprueba que 
-                                                            // En linea 1: El usuario se ha unido al proyecto
-                                                            // En linea 2:El usuario pueda ser el creador
-                                                            // En linea 3:El usuario pueda ser el administrador
+                                                            
                                                         ) && (project.createdBy.id == auth.user.id || auth.user.role == 'admin') && (<button
                                                             onClick={() => deleteProject(project)}
                                                             className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"

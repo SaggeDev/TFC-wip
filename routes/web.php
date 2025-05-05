@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectUserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 // Route::get('/', function () {
@@ -18,9 +19,8 @@ use Inertia\Inertia;
 //     ]);
 // });
 Route::redirect('/','/dashboard');//*1.Usuario llega, es redirigido a dashboard
-Route::prefix('api')->group(function () {
-    require base_path('routes/api.php');
-});
+
+//LAs rutas de la api están en Bootstrap/app.php
 
 Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha iniciado sesión, puede acceder a las rutas
     //*2.Usuario pasa por el middleware para poder acceder, si es digno pasa a la vista Dashboard administrada por inertia

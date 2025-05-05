@@ -23,11 +23,20 @@ class CardController extends Controller
             } else {
                 return ["success" => false, "error" => "No se reconoce la tarjeta"];
             }
-        }
-        else{
+        } else {
             return ["success" => false, "error" => "No se reconoce la tarjeta"];
-
         }
+    }
+    public function registerINO(Request $request)
+    {
+        $hexKey = $request->input('hexKey');
+        $inoSecret = $request->input('INOSecret');
+
+        return response()->json([
+            'message' => 'Received',
+            'hexKey' => $hexKey,
+            'INOSecret' => $inoSecret
+        ]);
     }
     public function index()
     {
