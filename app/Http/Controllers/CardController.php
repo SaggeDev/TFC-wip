@@ -19,7 +19,10 @@ class CardController extends Controller
             $user = User::where('id', $card->user_owner_id)->first();
             // return ["card" => $card, "user" => $user];
             if ($user) {
-                return app('App\Http\Controllers\TimeLogController')->registerINO($user);
+                if ($user->role == "admin") {
+                    return ["success" => true, "adminPermit" => true];
+                }
+                return app('App\Http\Controllers\TimeLogController')->registerTimeINO($user);
             } else {
                 return ["success" => false, "error" => "No se reconoce la tarjeta"];
             }
@@ -27,16 +30,33 @@ class CardController extends Controller
             return ["success" => false, "error" => "No se reconoce la tarjeta"];
         }
     }
-    public function registerINO(Request $request)
-    {
-        $hexKey = $request->input('hexKey');
-        $inoSecret = $request->input('INOSecret');
+    public function registerINO($hexKey)
+    { //Jungla de if's
+        $card = Card::where('key', $hexKey)->first();
+        if ($card) {
+            if ($card->user_owner_id != null) {
+                $user = User::where('id', $card->user_owner_id)->first();
 
-        return response()->json([
-            'message' => 'Received',
-            'hexKey' => $hexKey,
-            'INOSecret' => $inoSecret
-        ]);
+                if ($user->role == "admin") {
+                    return ["success" => true, "adminPermit" => true];
+                } else {
+                    return ["success" => false, "error" => "Tarjeta ya registrada", "adminPermit" => false];
+                }
+            }
+            else{
+                return ["success" => false, "error" => "Tarjeta ya registrada, pero sin usuario", "adminPermit" => false];
+            }
+        } else {
+            $newCard = Card::create([
+                'user_owner_id' => null,
+                'key' => $hexKey
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'card' => $newCard
+            ]);
+        }
     }
     public function index()
     {

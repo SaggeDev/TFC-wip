@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class TimeLogController extends Controller
 {
 
-    public function registerINO(User $user)
+    public function registerTimeINO(User $user)
     {
         $now = Carbon::now()->setMicrosecond(0);
         $lastTimeLog = TimeLog::where('user_id', $user->id)

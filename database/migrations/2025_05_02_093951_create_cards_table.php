@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId(column: 'user_owner_id')->constrained('users');
+            $table->foreignId(column: 'user_owner_id')->nullable()->constrained('users');
             $table->string('key');
             $table->timestamps();
         });

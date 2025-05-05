@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\NFCController;
 
@@ -19,8 +18,10 @@ Route::middleware([])->post('registerNFC', function (Request $request) {
   ]);
   $hexKey = $validated['hexKey'];
   $INOSecret = $validated['INOSecret'];
-  $user = User::where('role', 'arduino')->get()->filter(fn($user) => Hash::check($INOSecret, $user->password))->first();
+  $user = User::where('role', 'arduino')->get()->first(fn($user) => Hash::check($INOSecret, $user->password));
+
   if ($user) {
+    
     return app('App\Http\Controllers\CardController')->registerINO($hexKey);
   }
 
@@ -30,20 +31,18 @@ Route::middleware([])->post('registerNFC', function (Request $request) {
   ], 401);
 });
 
-//TODO: Convertir a POST
-Route::middleware([])->get('checkNFC/{hexKey}/{INOSecret}', function ($hexKey, $INOSecret) {
-  $user = User::where('role', 'arduino')->get()->filter(fn($user) => Hash::check($INOSecret, $user->password))->first();
-  //Uso first porque solo tengo un arduino, a futuro se cambiará para usar varios
-  if ($user) {
-    return app('App\Http\Controllers\CardController')->checkINO($hexKey);
-  }
-  return response()->json([
-    'success' => false,
-    'error' => 'Unauthorized'
-  ], 401);
-});
+// Route::middleware([])->get('checkNFC/{hexKey}/{INOSecret}', function ($hexKey, $INOSecret) {
+//   $user = User::where('role', 'arduino')->get()->filter(fn($user) => Hash::check($INOSecret, $user->password))->first();
+//   //Uso first porque solo tengo un arduino, a futuro se cambiará para usar varios
+//   if ($user) {
+//     return app('App\Http\Controllers\CardController')->checkINO($hexKey);
+//   }
+//   return response()->json([
+//     'success' => false,
+//     'error' => 'Unauthorized'
+//   ], 401);
+// });
 
-//?Prototipo de solicitud post del checkNFC, con verificación de parámetros y muy seguro para siguientes versiones
 Route::middleware([])->post('checkNFC', function (Request $request) {
 
   $validated = $request->validate([

@@ -42,6 +42,10 @@ class DatabaseSeeder extends Seeder
             'user_owner_id' => 2,
             'key' => '44:5C:1:4'
         ]);
+        Card::factory()->create([
+            'user_owner_id' => 1,
+            'key' => '3A:70:F9:3'
+        ]);
 
         Project::factory()->count(30)->hasTasks(30)->create();//?Crea 30 proyectos con 30 tareas cada uno
     }

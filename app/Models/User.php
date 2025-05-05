@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail //Vamos a implemen
         'name',
         'email',
         'password',
-        'role'//& AVISO A FUTURO: Esto puede causar errores gravisimos de seguridad, de modo que un usuario pueda hacer un curl y auto-ponerse como admin. De momento está por vagancia ༼ つ ◕_◕ ༽つ.
+        'role'//& AVISO A FUTURO: Esto puede causar errores gravisimos de seguridad, de modo que un usuario pueda hacer un curl y auto-ponerse como admin por mucho csrf que haya en el formulario. De momento está por falta de tiempo ༼ つ ◕_◕ ༽つ.
     ];
 
     /**
