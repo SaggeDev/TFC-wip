@@ -76,14 +76,14 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                     <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
                         Tareas
                     </h2>
-                    <br/>
+                    <br />
                     <Link href={route('task.create')} className="bg-green-600 text-white p-1 rounded-md"> Crear Tarea
                     </Link>
                 </div>
             }
         >
             <Head title='Tareas' ></Head>
-            {success&&<ConfirmationAlert text={success}/>}
+            {success && <ConfirmationAlert text={success} />}
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
@@ -171,7 +171,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                     </tr>
                                     <tr className="text-nowrap ">
                                         {/* <th className="p-4">ID</th> */}
-                                        <th className="p-3">Prioridad</th> {/*Imagen*/}
+                                        <th className="p-3">Prioridad</th> 
                                         <TableHeading
                                             name="id"
                                             sort_field={queryParams.sort_field}
@@ -204,7 +204,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                             sort_direction={queryParams.sort_direction}
                                             sortChanged={sortChanged}
                                         >
-                                            Creacion
+                                            Creación
                                         </TableHeading>
                                         <TableHeading
                                             name="due_date"
@@ -233,8 +233,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                     <div className="px-1 py-1 text-center content-center">
                                                         <div className={" py-1  rounded-lg text-white w-full  " + TASK_PRIORITY_CLASS_MAP[task.priority]}>{TASK_PRIORITY_TEXT_MAP[task.priority]}</div>
                                                     </div>
-                                                    {/* //! Hay un problema con las imágenes generadas por el seeder, hay que sutituirlas porquye la API de la página no funciona
-                                            //! https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4  */}
+                                                    
                                                     <th className="px-3 py-2 text-center">{task.id}</th>
                                                     <td className="px-3 py-2 !text-blue-900 hover:underline">
                                                         <Link href={route("task.show", task.id)} >{task.name}</Link>
@@ -256,7 +255,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                         {(task.createdFor.id == auth.user.id || task.createdBy.id == auth.user.id || auth.user.role == 'admin') && <Link href={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
                                                         </Link>}
-                                                        {(task.createdBy.id == auth.user.id || auth.user.role == 'admin') &&(<button
+                                                        {(task.createdBy.id == auth.user.id || auth.user.role == 'admin') && (<button
                                                             onClick={() => deleteTask(task)}
                                                             className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
                                                         >
@@ -266,7 +265,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                         {/* Solo si es el admin, el creador o el usuario asignado, se puede editar */}
                                                     </td>
                                                     {/* //^Parte de Actions */}
-                          
+
                                                 </tr>
                                             )
                                         })}

@@ -24,7 +24,7 @@ class ProjectController extends Controller
      */
 
     public function index() //Si en web.php llamamos a este constructor sin especificar el método, se ejecuta automáticamente el index. Oportunidad perfecta para poner un router de react con inertia
-    {
+    {//La razon por la que tarda tanto es porque se rehacen las querys con lo que quiere el usuario
         $query = Project::query();
 
         $sortField = request("sort_field", 'id');
