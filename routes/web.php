@@ -5,6 +5,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectUserController;
+use App\Http\Controllers\TimeLogController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +23,7 @@ Route::redirect('/','/dashboard');//*1.Usuario llega, es redirigido a dashboard
 
 //LAs rutas de la api están en Bootstrap/app.php
 
+
 Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha iniciado sesión, puede acceder a las rutas
     //*2.Usuario pasa por el middleware para poder acceder, si es digno pasa a la vista Dashboard administrada por inertia
     Route::get('/dashboard', fn ()=> Inertia::render('Dashboard'))
@@ -32,6 +34,8 @@ Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha inic
     
     Route::resource('task',TaskController::class);
     Route::resource('user',UserController::class);
+    Route::resource('timeLog',TimeLogController::class);
+
 
     Route::post('/projects/{project}/users', [ProjectUserController::class, 'store'])->name('projectUser.store');
 

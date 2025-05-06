@@ -6,6 +6,7 @@ use App\Models\TimeLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Container\Attributes\Auth;
 
 class TimeLogController extends Controller
 {
@@ -49,9 +50,46 @@ class TimeLogController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
+
+    //  public function demonstration()
+    // {
+    //     $timeLog = TimeLog::with('user')->get();
+    //     //^ Esto devuelve el usuario completo también
+
+    //     return response()->json($timeLog);
+    // }
+    public function index() 
+    //Para permitir la vista distinta de admin y users, esta programado de forma que se cargan todos los registros pero se muestran solo los que tienen el user id==card[user id] por asi decirlo, si es admin, se desactiva la condición
     {
-        //
+        $query = TimeLog::query();
+
+        $sortField = request("sort_field", 'id');
+        $sortDirection = request("sort_direction", "asc");
+        //^Para el orden de registros
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("entry_time")) {
+            $query->where("entry_time", request("entry_time"));
+        }
+        if (request("id")) {
+            $query->where("id", request("id"));
+        }
+
+        if (request('user')) {
+            $query->whereHas('user', function ($q): void {
+                $q->where('name', 'like',  '%' . request('user') . '%');
+            });
+        }
+        $timeLogs = $query->with('user')->orderBy($sortField, $sortDirection)
+            ->paginate(10)
+            ->onEachSide(1); // Devuelve todos los registros
+        return inertia('TimeLog/Index', [
+            'timeLogs' => $timeLogs,
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success')
+        ]);
     }
 
     /**
