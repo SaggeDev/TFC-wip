@@ -116,6 +116,7 @@ class TaskController extends Controller
     {
         return inertia('Task/Show', [
             'task' => new TaskResource($task),
+            'success' => session('success')
         ]);
     }
 
@@ -139,6 +140,7 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        $name=$task->name;
         $data = $request->validated();
         $image = $request->file('image') ;
         $data['updated_by'] = Auth::id();
@@ -153,7 +155,7 @@ class TaskController extends Controller
         $task->update($data);
 
         return to_route('task.show',$task->id)
-            ->with('success', "La tarea \"$task->name\" ha sido modificada con éxito");
+            ->with('success', "La tarea \"$name\" ha sido modificada con éxito");
     }
 
     /**
@@ -167,7 +169,7 @@ class TaskController extends Controller
             Storage::disk('public')->deleteDirectory(dirname($task->image));
         }
         return to_route('task.index')
-            ->with('success', "La tarea \"$task->name\" ha sido eliminada con éxito");
+            ->with('success', "La tarea \"$name\" ha sido eliminada con éxito");
     }
     public function myTasks()
     {

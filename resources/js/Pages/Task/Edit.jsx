@@ -23,7 +23,9 @@ export default function Create({ auth, task, projects, users }) {
     _method: "PUT",
   });
 
+
   const onSubmit = (e) => {
+    console.log(data);
     e.preventDefault();
     const formData = new FormData();
 
@@ -176,14 +178,17 @@ export default function Create({ auth, task, projects, users }) {
                   value={data.priority}
                   className="mt-1 block w-full"
                   onChange={(e) => setData("priority", e.target.value)}
+                  
                 >
+
                   <option value="" >...</option>
                   <option value="low" className="text-amber-500 hover:bg-amber-500">Baja</option>
-                  <option value="medium" className="text-amber-700">Alta</option>
-                  <option value="high" className="text-red-700">Urgente</option>
+                  <option value="high" className="text-amber-700">Alta</option>
+                  <option value="urgent" className="text-red-700">Urgente</option>
                 </SelectInput>
 
                 <InputError message={errors.priority} className="mt-2" />
+                {console.log(errors)}
               </div>
               <div className="mt-4">
                 <InputLabel htmlFor="task_link" value="Link de la tarea" />
