@@ -27,7 +27,7 @@ class StoreTaskRequest extends FormRequest
             'status' => 'required|in:pending,in_progress,completed',
             'due_date' => 'nullable|date',
             'project_id' => 'required|exists:projects,id',
-            'priority' => 'nullable|in:low,medium,high',
+            'priority' => 'nullable|in:low,high,urgent',
             'assigned_user_id' => 'nullable|exists:users,id',
             'image' => 'nullable',
             'task_link'=>'nullable|string|max:255'

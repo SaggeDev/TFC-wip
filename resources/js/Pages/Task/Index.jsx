@@ -252,7 +252,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                         {console.log(auth.user.id)} 
                                                         {console.log(task.createdBy.id)}  */}
 
-                                                        {(task.createdFor.id == auth.user.id || task.createdBy.id == auth.user.id || auth.user.role == 'admin') && <Link href={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
+                                                        {(task.createdFor?.id == auth.user.id || task.createdBy.id == auth.user.id || auth.user.role == 'admin') && <Link href={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar
                                                         </Link>}
                                                         {(task.createdBy.id == auth.user.id || auth.user.role == 'admin') && (<button

@@ -15,8 +15,12 @@ export default function Show({ auth, success, task }) {
   const [isIn, setIsIn] = useState(false);
   const [isCreator, setIsCreator] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const createdForId=task.data.createdFor?.id ?? null;
+  const createdForName=task.data.createdFor?.name ?? null;
+  const createdForEmail=task.data.createdFor?.email?? null;
+
   useEffect(() => {
-    if (task.data.createdFor.id === auth.user.id) {
+    if (createdForId === auth.user.id) {
       setIsIn(true);
     }
     if (task.data.createdBy.id === auth.user.id) {
@@ -25,7 +29,7 @@ export default function Show({ auth, success, task }) {
     if (auth.user.role === "admin") { // ← You had "role" == "role"
       setIsAdmin(true);
     }
-  }, [auth.user.id, auth.user.role, task.data.createdBy.id, task.data.createdFor.id]);
+  }, [auth.user.id, auth.user.role, task.data.createdBy.id, createdForId]);
 
   const deleteTask = (task) => {
     if (!window.confirm("Estas seguro que quieres eliminar esta tarea?")) {
@@ -138,9 +142,9 @@ export default function Show({ auth, success, task }) {
                   </div>
                   <div className="mt-4">
                     <label className="font-bold text-lg">Usuario asignado</label>
-                    {auth.user.id === task.data.createdFor.id ? (
-                      <p className="mt-1 text-blue-500">{task.data.createdFor.name} (Tu)</p>
-                    ) : <p className="mt-1">{task.data.createdFor.name}({task.data.createdFor.email})</p>}
+                    {auth.user.id === createdForId ? (
+                      <p className="mt-1 text-blue-500">{createdForName} (Tu)</p>
+                    ) : <p className="mt-1">{createdForName}{createdForEmail ? ` (${createdForEmail})` : "Nadie"}</p>}
 
                   </div>
                 </div>

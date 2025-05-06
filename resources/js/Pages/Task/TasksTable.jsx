@@ -220,7 +220,7 @@ export default function Index({ tasks, queryParams, project, isIn, isAdmin, isCr
                           {TASK_STATUS_TEXT_MAP[task.status]}
                         </div>
                       </td>
-                      <td className="px-4 py-2">{task.createdFor.name}</td>
+                      <td className="px-4 py-2">{task.createdFor?.name?? "Nadie"}</td>
                       <td className="px-4 py-2">{task.created_at}</td>
                       <td className="px-4 py-2">{task.due_date}</td>
                       <td className="px-4 py-2">
