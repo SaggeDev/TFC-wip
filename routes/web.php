@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -26,9 +27,8 @@ Route::redirect('/','/dashboard');//*1.Usuario llega, es redirigido a dashboard
 
 Route::middleware(['auth','verified'])->group(function(){//Si el usuario ha iniciado sesión, puede acceder a las rutas
     //*2.Usuario pasa por el middleware para poder acceder, si es digno pasa a la vista Dashboard administrada por inertia
-    Route::get('/dashboard', fn ()=> Inertia::render('Dashboard'))
-        ->name('dashboard')//Si recibe la ruta, devuelve el renderizado del componente de inertia
-    ;
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
     //?Esto es básicamente barra libre, se prestan las rutas de los controladores como rutas uri
     Route::resource('project', ProjectController::class);
     
