@@ -58,7 +58,7 @@ class TimeLogController extends Controller
 
     //     return response()->json($timeLog);
     // }
-    public function index() 
+    public function index()
     //Para permitir la vista distinta de admin y users, esta programado de forma que se cargan todos los registros pero se muestran solo los que tienen el user id==card[user id] por asi decirlo, si es admin, se desactiva la condición
     {
         $query = TimeLog::query();
