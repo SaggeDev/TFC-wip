@@ -59,7 +59,7 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
       queryParams.sort_field = name;
       queryParams.sort_direction = "asc";
     }
-    router.get(route("TimeLog.index"), queryParams);
+    router.get(route("timeLog.index"), queryParams);
   };
 
 
@@ -128,14 +128,13 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
                           searchFieldChanged("work_type", e.target.value)
                         }
                       >
-                        <option className="text-gray-400" value="">Tipo</option>
+                        <option className="text-gray-400" value="">...</option>
                         <option value="at_office">Personado</option>
                         <option value="home_office">Teletrabajado</option>
 
                       </SelectInput>
                     </th>
-                    {/* Tiempo total */}
-                    <th className="px-3 py-3" ></th>
+                    
                     {adminPresent && (
                       <>
                         {/* (Solo admin) Pertenece a  */}
@@ -154,7 +153,7 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
                           />
                         </th>
                         {/* (Solo admin) Alterado  */}
-                        <th className="px-3 py-3" >
+                        <th className="px-3 py-3 text-center" >
                           <SelectInput
                             className="w-full bg-blue-100"
                             defaultValue={queryParams.altered}
@@ -162,18 +161,67 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
                               searchFieldChanged("altered", e.target.value)
                             }
                           >
-                            <option className="text-gray-400" value="">Alterado</option>
-                            <option value="at_office">Si</option>
-                            <option value="home_office">No</option>
+                            <option className="text-gray-400" value="">...</option>
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
 
                           </SelectInput></th>
                       </>
                     )}
-                    <th className="px-3 py-3 content-center" >
+                    {/* Tiempo total */}
+                    {!adminPresent&&(<th className="px-3 py-3 content-center"/>)}
+                    <th className="px-3 py-3 content-center text-center" >
                       {(queryString != "") && <ResetButton link="timeLog.index" queryString={queryString} />}
                     </th>
                   </tr>
-                  <tr>
+                  <tr className="text-nowrap ">
+                    {/* <th className="p-4">ID</th> */}
+                    <TableHeading
+                      name="id"
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      ID
+                    </TableHeading>
+                    <TableHeading
+                      name="entry_time"
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      Fecha de entrada
+                    </TableHeading>
+                    <TableHeading
+                      name="exit_time"
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      Fecha de salida
+                    </TableHeading>
+                    <th className="p-3 text-center">Tipo de registro</th>
+
+                    {/* //^Cabe mencionar que por la naturaleza de las relaciones de las tablas, se filtra por orden numérico del id de usuario(Lo que viene a se un orden de creación de usuario) */}
+                    
+                    {adminPresent&&(
+                        <>
+                        <TableHeading
+                      name="user_id"
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      Usuario 
+                    </TableHeading>
+                    <th className="p-3 text-center">Alterado</th></>
+                      )
+                    }
+                    <th className="p-3 text-center">Tiempo total</th>
+                    {!adminPresent&&(<th className="p-3 text-center">Acciones</th>)}
+                    
+                    
+
 
                   </tr>
                 </thead>

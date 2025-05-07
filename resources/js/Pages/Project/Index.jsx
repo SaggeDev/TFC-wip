@@ -166,7 +166,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                     </tr>
                                     <tr className="text-nowrap ">
                                         {/* <th className="p-4">ID</th> */}
-                                        <th className="p-3">Imagen</th> 
+                                        <th className="p-3">Imagen</th>
                                         <TableHeading
                                             name="id"
                                             sort_field={queryParams.sort_field}
