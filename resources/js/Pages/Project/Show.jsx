@@ -21,7 +21,6 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
       { user_id: user_id }
     );
   };
-  console.log(project.data)
   if (auth.user.id === project.data.createdBy.id) {
     if (!isCreator) {
       setIsCreator(true);

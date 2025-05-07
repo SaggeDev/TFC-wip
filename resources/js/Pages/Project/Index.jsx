@@ -83,7 +83,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                     <h2 className="text-xl font-semibold leading-tight text-blue-800 dark:text-gray-200">
                         Proyectos
                     </h2>
-                    <br/>
+                    <br />
                     <Link href={route('project.create')} className="bg-green-600 text-white p-1 rounded-md"> Crear Proyecto
                     </Link>
                 </div>
@@ -264,7 +264,7 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
                                                             ((Array.isArray(usersOnProject) && usersOnProject.some(user => user.user_id === auth.user.id)) && (Array.isArray(usersOnProject) && usersOnProject.some(user => user.project_id === project.id))) ||
                                                             (project.createdBy.id === auth.user.id) ||
                                                             auth.user.role === 'admin'
-                                                            
+
                                                         ) && (project.createdBy.id == auth.user.id || auth.user.role == 'admin') && (<button
                                                             onClick={() => deleteProject(project)}
                                                             className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"

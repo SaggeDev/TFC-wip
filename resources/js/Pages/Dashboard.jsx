@@ -7,8 +7,7 @@ import ResetButton from "@/Pages/Task/ResetButton";
 import SelectInput from "@/Components/SelectInput";
 
 
-export default function Dashboard({ auth, queryParams = null, totalPendingTasks, myPendingTasks, totalProgressTasks, myProgressTasks, totalCompletedTasks, myCompletedTasks, activeTasks,
-}) {
+export default function Dashboard({ auth, queryParams = null, myPendingTasks, myProgressTasks, myCompletedTasks, activeTasks}) {
     const { page, ...nonPageParams } = queryParams || {};
     const queryString = new URLSearchParams(nonPageParams).toString();
     //Para poder buscar los campos
@@ -63,9 +62,8 @@ export default function Dashboard({ auth, queryParams = null, totalPendingTasks,
                             <h3 className="text-red-500 text-2xl font-semibold">
                                 Tareas pendientes
                             </h3>
-                            <p className="text-xl mt-4">
-                                <span className="mr-2">{myPendingTasks}</span>/
-                                <span className="ml-2">{totalPendingTasks}</span>
+                            <p className="text-xl text-center mt-4">
+                                <span className="mr-2">{myPendingTasks}</span>
                             </p>
                         </div>
                     </div>
@@ -74,9 +72,8 @@ export default function Dashboard({ auth, queryParams = null, totalPendingTasks,
                             <h3 className="text-blue-500 text-2xl font-semibold">
                                 Tareas en progreso
                             </h3>
-                            <p className="text-xl mt-4">
-                                <span className="mr-2">{myProgressTasks}</span>/
-                                <span className="ml-2">{totalProgressTasks}</span>
+                            <p className="text-xl text-center mt-4">
+                                <span className="mr-2">{myProgressTasks}</span>
                             </p>
                         </div>
                     </div>
@@ -85,9 +82,8 @@ export default function Dashboard({ auth, queryParams = null, totalPendingTasks,
                             <h3 className="text-green-500 text-2xl font-semibold">
                                 Tareas completadas
                             </h3>
-                            <p className="text-xl mt-4">
-                                <span className="mr-2">{myCompletedTasks}</span>/
-                                <span className="ml-2">{totalCompletedTasks}</span>
+                            <p className="text-xl text-center mt-4">
+                                <span className="mr-2">{myCompletedTasks}</span>
                             </p>
                         </div>
                     </div>
@@ -133,7 +129,6 @@ export default function Dashboard({ auth, queryParams = null, totalPendingTasks,
                                                 <option className="text-gray-400" value="">Todos</option>
                                                 <option value="pending">Pendiente</option>
                                                 <option value="in_progress">En progreso</option>
-                                                <option value="completed">Completado</option>
                                             </SelectInput>
                                         </th>
                                         

@@ -25,7 +25,6 @@ export default function Create({ auth, task, projects, users }) {
 
 
   const onSubmit = (e) => {
-    console.log(data);
     e.preventDefault();
     const formData = new FormData();
 
@@ -41,7 +40,6 @@ export default function Create({ auth, task, projects, users }) {
     });
   };
 
-  console.log(task)
 
   return (
     <AuthenticatedLayout
@@ -188,7 +186,6 @@ export default function Create({ auth, task, projects, users }) {
                 </SelectInput>
 
                 <InputError message={errors.priority} className="mt-2" />
-                {console.log(errors)}
               </div>
               <div className="mt-4">
                 <InputLabel htmlFor="task_link" value="Link de la tarea" />

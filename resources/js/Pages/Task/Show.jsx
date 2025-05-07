@@ -11,7 +11,6 @@ import ConfirmationAlert from "@/Components/ConfirmationAlert.jsx"
 
 
 export default function Show({ auth, success, task }) {
-  console.log(success)
   const [isIn, setIsIn] = useState(false);
   const [isCreator, setIsCreator] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -43,7 +42,7 @@ export default function Show({ auth, success, task }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-xl text-blue-800 dark:text-gray-200 leading-tight">
-            {`Tarea "${task.data.name}"`}
+            {`Tarea: ${task.data.name}`}
           </h2>
           {(isAdmin || isCreator) && <button
             onClick={() => deleteTask(task)}

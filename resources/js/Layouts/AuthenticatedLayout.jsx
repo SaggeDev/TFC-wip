@@ -62,12 +62,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Horas
                                 </NavLink>
-                                {/* {user.role=="admin"&&<NavLink
+                                {user.role=="admin"&&<NavLink
                                     href={route('user.index')}
                                     active={route().current('user.index')}
                                 >
                                     Usuarios
-                                </NavLink>} */}
+                                </NavLink>}
                                 {/* //^ Probablemente demasiado ambicioso, ya veremos.... */}
                                 
 

@@ -42,7 +42,7 @@ export default function Create({ auth, project, success }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-blue-800 dark:text-gray-200 leading-tight">
-            Editar proyecto "{project.data.name}"
+            Editar proyecto: {project.data.name}
           </h2>
         </div>
       }

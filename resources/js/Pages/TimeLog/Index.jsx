@@ -34,6 +34,30 @@ export default function Index({ success, querParams, timeLogs, auth }) {
     >
       <Head title='Registros horarios' ></Head>
       {success && <ConfirmationAlert text={success} />}
+      <div className="py-12">
+        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+            <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md">
+              <table>
+                <thead>
+                  <tr>
+
+                  </tr>
+                  <tr>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
 
     </AuthenticatedLayout>
   )

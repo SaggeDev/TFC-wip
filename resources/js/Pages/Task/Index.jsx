@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { TASK_STATUS_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_PRIORITY_CLASS_MAP } from "@/constants.jsx";
 import ResetButton from "@/Pages/Task/ResetButton";
 import ConfirmationAlert from "@/Components/ConfirmationAlert"
+import { Button } from "@mui/material";
 
 
 export default function Index({ tasks, queryParams = null, success, auth }) {//Cada que llame a este componente, voy a tener que mandarle la lista de tareas
@@ -22,6 +23,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
         }
         router.delete(route("task.destroy", task.id));
     };
+    // const [myTasks, setMyTasks]=useState(false);
 
     //Para poder buscar los campos
     queryParams = queryParams || {};//El valor por defecto que toma al cargar la página es null
@@ -91,7 +93,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                             {/* <pre>{JSON.stringify(tasks,undefined,2)}</pre> */}
                             {/*//? Esto devuelve un texto con el contenido simple, perfecto para json y revisar lo que devuelve el controlador*/}
 
-                            {/*//*Display de los proyectos */}
+                            {/*//*Display de las tareas */}
                             <table className="w-full text-sm text-left rtl:text-right  text-gray-500 dark:text-gray-400 ">
                                 {/*Inicio menu/índice de tabla */}
                                 <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -164,6 +166,13 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                         </th>
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
+                                        {/* <th className="px-3 py-3">
+                                           <Link className={"rounded-lg  p-3 "+ (myTasks?"bg-blue-200 text-blue-600":"bg-green-200 text-green-600")} onClick={
+                                            ()=>{setMyTasks(!myTasks)}
+                                           } color="inherit">Mis tareas</Link> 
+                                        </th> */}
+                                        {/* //TODO: Mejora */}
+                                        
                                         <th className="px-3 py-3">
                                             {(queryString != "") && <ResetButton link="task.index" queryString={queryString} />}
 
@@ -264,7 +273,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
 
                                                         {/* Solo si es el admin, el creador o el usuario asignado, se puede editar */}
                                                     </td>
-                                                    {/* //^Parte de Actions */}
+                                                    
 
                                                 </tr>
                                             )
@@ -273,7 +282,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                 </tbody>
                                 {/*Fin contenidos de tabla */}
                             </table>
-                            {/*//*Fin display de los proyectos */}
+                            {/*//*Fin display de las tareas */}
                             {/*//* Menu de Paginación */}
 
                             <Pagination pagLinks={tasks.meta} activeParam={queryString}>
