@@ -21,25 +21,29 @@ export default function Show({ auth, success, project, UsersOnProject, tasks, qu
       { user_id: user_id }
     );
   };
-  if (auth.user.id === project.data.createdBy.id) {
-    if (!isCreator) {
-      setIsCreator(true);
-    }
-  }
-  if (auth.user.role === 'admin') {
-    if (!isAdmin) {
-      setIsAdmin(true);
-    }
+  switch (true) {
+    case auth.user.id === project.data.createdBy.id:
+      if (!isCreator) {
+        setIsCreator(true);
+      }
+      break;
+    case auth.user.role === 'admin':
+      if (!isAdmin) {
+        setIsAdmin(true);
+      }
+      break;
+    default:
+      break;
   }
   const deleteProject = (project) => {
     if (!window.confirm("Estas seguro que quieres eliminar este proyecto?")) {
-        return;
+      return;
     }
     if (!window.confirm("También estarás borrando las tareas y archivos. Esta acción es completamente irreversible, estás seguro?")) {
-        return;
+      return;
     }
     router.delete(route("project.destroy", project.id));
-};
+  };
 
   return (
 

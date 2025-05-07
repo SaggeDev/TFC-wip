@@ -14,19 +14,23 @@ export default function Show({ auth, success, task }) {
   const [isIn, setIsIn] = useState(false);
   const [isCreator, setIsCreator] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const createdForId=task.data.createdFor?.id ?? null;
-  const createdForName=task.data.createdFor?.name ?? null;
-  const createdForEmail=task.data.createdFor?.email?? null;
+  const createdForId = task.data.createdFor?.id ?? null;
+  const createdForName = task.data.createdFor?.name ?? null;
+  const createdForEmail = task.data.createdFor?.email ?? null;
 
   useEffect(() => {
-    if (createdForId === auth.user.id) {
-      setIsIn(true);
-    }
-    if (task.data.createdBy.id === auth.user.id) {
-      setIsCreator(true);
-    }
-    if (auth.user.role === "admin") { // ← You had "role" == "role"
-      setIsAdmin(true);
+    switch (true) {
+      case createdForId === auth.user.id:
+        setIsIn(true);
+        break;
+      case task.data.createdBy.id === auth.user.id:
+        setIsCreator(true);
+        break;
+      case auth.user.role === "admin":
+        setIsAdmin(true);
+        break;
+      default:
+        break;
     }
   }, [auth.user.id, auth.user.role, task.data.createdBy.id, createdForId]);
 
@@ -58,7 +62,7 @@ export default function Show({ auth, success, task }) {
             Editar
           </Link>
           }
-          
+
         </div>
       }
     >
