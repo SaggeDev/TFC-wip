@@ -22,8 +22,8 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
   let end;
   let duration;
   const calcDuration = (timeLog) => {//Sugerencia de Pablo Miguel Ferrer
-    start = Moment(timeLog.entry_time, 'HH:mm:ss');
-    end = Moment(timeLog.exit_time, 'HH:mm:ss');
+    start = Moment(timeLog.entry_time, 'YYYY-MM-DD HH:mm:ss');
+    end = Moment(timeLog.exit_time, 'YYYY-MM-DD HH:mm:ss');
     start.add(4,'days')
     end.add(4,'days')
     duration = Moment.duration(end.diff(start));
