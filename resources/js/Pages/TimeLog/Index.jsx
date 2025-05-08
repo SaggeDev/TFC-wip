@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { PROJECT_STATUS_TEXT_MAP, PROJECT_STATUS_CLASS_MAP } from "@/constants.jsx";
 import ResetButton from "@/Pages/Task/ResetButton";
 import ConfirmationAlert from "@/Components/ConfirmationAlert"
+import Moment from 'moment';
 
 //? Para permitir la vista distinta de admin y users, esta programado de forma que se cargan todos los registros pero se muestran solo los que tienen el user id==card[user id] por asi decirlo, si es admin, se desactiva la condición
 export default function Index({ success, queryParams = null, timeLogs, auth }) {
@@ -16,6 +17,18 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
   // usersOnProject.some(user => user.id === auth.user.id))
   // console.log(usersOnProject)
   // console.log(auth.user.id)
+  Moment.locale('es');
+  let start;
+  let end;
+  let duration;
+  const calcDuration = (timeLog) => {//Sugerencia de Pablo Miguel Ferrer
+    start = Moment(timeLog.entry_time, 'HH:mm:ss');
+    end = Moment(timeLog.exit_time, 'HH:mm:ss');
+    start.add(4,'days')
+    end.add(4,'days')
+    duration = Moment.duration(end.diff(start));
+    return (duration);
+  };
   const hasNoParams = Object.keys(queryParams || {}).length === 0;
   const checkParams = (hasNoParams) => {
     hasNoParams = Object.keys(queryParams || {}).length === 0;
@@ -134,7 +147,7 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
 
                       </SelectInput>
                     </th>
-                    
+
                     {adminPresent && (
                       <>
                         {/* (Solo admin) Pertenece a  */}
@@ -169,7 +182,7 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
                       </>
                     )}
                     {/* Tiempo total */}
-                    {!adminPresent&&(<th className="px-3 py-3 content-center"/>)}
+                    {!adminPresent && (<th className="px-3 py-3 content-center" />)}
                     <th className="px-3 py-3 content-center text-center" >
                       {(queryString != "") && <ResetButton link="timeLog.index" queryString={queryString} />}
                     </th>
@@ -203,29 +216,69 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
                     <th className="p-3 text-center">Tipo de registro</th>
 
                     {/* //^Cabe mencionar que por la naturaleza de las relaciones de las tablas, se filtra por orden numérico del id de usuario(Lo que viene a se un orden de creación de usuario) */}
-                    
-                    {adminPresent&&(
-                        <>
+
+                    {adminPresent && (
+                      <>
                         <TableHeading
-                      name="user_id"
-                      sort_field={queryParams.sort_field}
-                      sort_direction={queryParams.sort_direction}
-                      sortChanged={sortChanged}
-                    >
-                      Usuario 
-                    </TableHeading>
-                    <th className="p-3 text-center">Alterado</th></>
-                      )
+                          name="user_id"
+                          sort_field={queryParams.sort_field}
+                          sort_direction={queryParams.sort_direction}
+                          sortChanged={sortChanged}
+                        >
+                          Usuario
+                        </TableHeading>
+                        <th className="p-3 text-center">Alterado</th></>
+                    )
                     }
                     <th className="p-3 text-center">Tiempo total</th>
-                    {!adminPresent&&(<th className="p-3 text-center">Acciones</th>)}
-                    
-                    
+                    {!adminPresent && (<th className="p-3 text-center">Acciones</th>)}
+
+
 
 
                   </tr>
                 </thead>
                 <tbody>
+                  <br />
+                  {(timeLogs.data).map((timeLog) => {
+                    duration = calcDuration(timeLog);
+
+
+                    return (
+                      <tr key={timeLog.id}>
+                        <td>{timeLog.id}</td>
+                        <td>
+                          {Moment(timeLog.entry_time).format('HH:mm:ss ')}
+                          <br />
+                          {Moment(timeLog.entry_time).format('DD MMM yy ')}
+                        </td>
+                        <td>
+                          {Moment(timeLog.exit_time).format('HH:mm:ss ')}
+                          <br />
+                          {Moment(timeLog.exit_time).format('DD MMM yy ')}
+                        </td>
+                        <td>{(timeLog.work_type == "at_office") ? "Personado" : "Teletrabajado"}</td>
+                        {adminPresent && (
+                          <>
+                            <td>{timeLog.user.name}</td>
+                            <td>{timeLog.altered ? "Sí" : "No"}</td>
+                          </>
+                        )}
+                        <td>
+                          {console.log(duration)}
+                          {duration.days() > 0 ? `${duration.days()}d   :   ` : ""}{duration.hours()}h   :   {duration.minutes()}m
+                        </td>
+                        {!adminPresent && (
+                          <td>
+                            <Link href={route('timeLog.edit', timeLog.id)} className="text-blue-500">Editar</Link>
+                          </td>
+
+                        )}
+                        <td></td>
+
+                      </tr>
+                    )
+                  })}
 
                 </tbody>
               </table>
@@ -237,6 +290,6 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
 
 
 
-    </AuthenticatedLayout>
+    </AuthenticatedLayout >
   )
 }

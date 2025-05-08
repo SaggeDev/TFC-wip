@@ -71,15 +71,24 @@ class TimeLogController extends Controller
             $query->where("name", "like", "%" . request("name") . "%");
         }
         if (request("entry_time")) {
-            $query->where("entry_time", request("entry_time"));
+            $query->whereDate("entry_time", request("entry_time"));
+        }
+        if (request("exit_time")) {
+            $query->whereDate("exit_time", request("exit_time"));
+        }
+        if (request("altered")) {
+            $query->where("altered", request("altered"));
         }
         if (request("id")) {
             $query->where("id", request("id"));
         }
+        if (request("work_type")) {
+            $query->where("work_type", request("work_type"));
+        }
 
-        if (request('user')) {
+        if (request('user_id')) {
             $query->whereHas('user', function ($q): void {
-                $q->where('name', 'like',  '%' . request('user') . '%');
+                $q->where('name', 'like',  '%' . request('user_id') . '%');
             });
         }
         $timeLogs = $query->with('user')->orderBy($sortField, $sortDirection)
