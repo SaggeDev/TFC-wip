@@ -66,6 +66,7 @@ return [
     */
 
     'timezone' => 'Europe/Madrid',
+    //Como los datos horarios de la BdD están guardados en UTC+0, Moment sacaesos datos y esta variable para obtener la "conversión"
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +79,8 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'es'),
+    //^ Con esto le digo que use los documentos de lang/es en vez de lang/en
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

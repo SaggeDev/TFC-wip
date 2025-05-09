@@ -6,7 +6,8 @@ use App\Models\TimeLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Support\Facades\Auth;
+
 
 class TimeLogController extends Controller
 {
@@ -62,14 +63,17 @@ class TimeLogController extends Controller
     //Para permitir la vista distinta de admin y users, esta programado de forma que se cargan todos los registros pero se muestran solo los que tienen el user id==card[user id] por asi decirlo, si es admin, se desactiva la condición
     {
         $query = TimeLog::query();
-
+        $user = Auth::user();
+        match($user->role){
+            "user"=>$query->where("user_id", "like",$user->id),
+            default=>""
+        };
+        
         $sortField = request("sort_field", 'id');
         $sortDirection = request("sort_direction", "asc");
         //^Para el orden de registros
 
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
+       
         if (request("entry_time")) {
             $query->whereDate("entry_time", request("entry_time"));
         }

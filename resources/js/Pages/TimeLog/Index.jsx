@@ -4,31 +4,52 @@ import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading"
-import { useState, useEffect } from "react";
-import { PROJECT_STATUS_TEXT_MAP, PROJECT_STATUS_CLASS_MAP } from "@/constants.jsx";
 import ResetButton from "@/Pages/Task/ResetButton";
 import ConfirmationAlert from "@/Components/ConfirmationAlert"
 import Moment from 'moment';
+import { now } from "moment/moment";
+import React from 'react';
 
-//? Para permitir la vista distinta de admin y users, esta programado de forma que se cargan todos los registros pero se muestran solo los que tienen el user id==card[user id] por asi decirlo, si es admin, se desactiva la condición
+
+
+
 export default function Index({ success, queryParams = null, timeLogs, auth }) {
   const adminPresent = (auth.user.role == "admin") ? true : false;
   //? Si lo manejo con una constante condicional, gano en seguridad, comprensión lectora(por asi decirlo) y ahorro recursos
-  // usersOnProject.some(user => user.id === auth.user.id))
-  // console.log(usersOnProject)
-  // console.log(auth.user.id)
+
+  //Variables y funciones de tiempo
   Moment.locale('es');
   let start;
   let end;
   let duration;
+  let exit_time;
+  let entry_time;
   const calcDuration = (timeLog) => {//Sugerencia de Pablo Miguel Ferrer
     start = Moment(timeLog.entry_time, 'YYYY-MM-DD HH:mm:ss');
     end = Moment(timeLog.exit_time, 'YYYY-MM-DD HH:mm:ss');
-    start.add(4,'days')
-    end.add(4,'days')
+    start.add(4, 'days')
+    end.add(4, 'days')
     duration = Moment.duration(end.diff(start));
     return (duration);
   };
+  const calcDurationfromNow = (timeLog) => {//Sugerencia de Pablo Miguel Ferrer
+    const start = Moment(timeLog.entry_time, 'YYYY-MM-DD HH:mm:ss');
+    const end = Moment(Moment(), 'YYYY-MM-DD HH:mm:ss');
+    start.add(4, 'days');
+    end.add(4, 'days');
+    const duration = Moment.duration(end.diff(start));
+    return duration;
+  };
+
+  const isToday = (date) => {
+    let today = Moment(now()).format('DD MMM yy ');
+    if (today === date.format('DD MMM yy ')) {
+      return "bg-gray-50";
+    } else {
+      return "";
+    }
+  };
+  //Variables y funciones de parametros
   const hasNoParams = Object.keys(queryParams || {}).length === 0;
   const checkParams = (hasNoParams) => {
     hasNoParams = Object.keys(queryParams || {}).length === 0;
@@ -60,7 +81,8 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
     searchFieldChanged(name, e.target.value);
   };
 
-  //Para cambiar el orden de los resultados
+  //Variables y funciones de filtros, especificamente el orden
+
   const sortChanged = (name) => {
     if (name === queryParams.sort_field) {
       if (queryParams.sort_direction === "asc") {
@@ -119,7 +141,7 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
 
                     </th>
                     {/* Entrada */}
-                    <th className="px-3 py-3" >
+                    <th className="px-1 py-3" >
                       <input aria-label="Date" type="date" className="  bg-blue-100 rounded-lg border-gray-300  focus:border-indigo-500  focus:ring-indigo-500 dark:focus:ring-indigo-600  shadow-sm"
                         placeholder="Fecha de entrada"
                         onChange={(e) =>
@@ -241,52 +263,119 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
                 <tbody>
                   <br />
                   {(timeLogs.data).map((timeLog) => {
-                    duration = calcDuration(timeLog);
+
+                    entry_time = Moment(timeLog.entry_time);
+                    exit_time = Moment(timeLog.exit_time);
+                    switch (timeLog.exit_time) {
+                      case null:
+                        duration = calcDurationfromNow(timeLog);
+                        return (
+
+                          <tr key={timeLog.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md">
+                            <th className="px-1 py-1 text-center content-center  rounded-lg">{timeLog.id}</th>
+                            <td className={"px-3 py-2 text-md text-center " + isToday(entry_time)}>
+                              {entry_time.format('HH:mm:ss ')}
+                              <br />
+                              {entry_time.format('DD MMM yy ')}
+
+                            </td>
+                            <td className={"px-3 py-2 text-md text-center " + isToday(exit_time)}>
+                              Registro en progreso
+                            </td>
+                            <td className="px-3 py-2 text-md text-center" >{(timeLog.work_type == "at_office") ? "Personado" : "Teletrabajado"}</td>
+                            {adminPresent && (
+                              <>
+                                <td className="px-3 py-2 text-md text-center" >{timeLog.user.name} ({timeLog.user.email})</td>
+                                <td className="px-3 py-2 text-md text-center">{timeLog.altered ? "Sí" : "No"}</td>
+                              </>
+                            )}
+                            <td className="px-3 py-2 text-md text-center">
+                              {duration.days() > 0 ? `${duration.days()}d   :   ` : ""}{duration.hours()}h   :   {duration.minutes()}m 
+                              <br/>
+                              (No definitivo)
+                            
+                            </td>
+                            {!adminPresent && (
+                              <td className="px-3 py-2 text-center">
+                                <Link
+                                  href={route('task.edit', task.id)}
+                                  className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-4 hover:shadow-sm rounded-md text-base inline-block min-w-[90px] text-center"
+                                >
+                                  Editar
+                                </Link>
+                                <button
+                                  onClick={() => deleteTask(task)}
+                                  className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md text-base inline-block min-w-[90px] text-center"
+                                >
+                                  Eliminar
+                                </button>
+                              </td>
 
 
-                    return (
-                      <tr key={timeLog.id}>
-                        <td>{timeLog.id}</td>
-                        <td>
-                          {Moment(timeLog.entry_time).format('HH:mm:ss ')}
-                          <br />
-                          {Moment(timeLog.entry_time).format('DD MMM yy ')}
-                        </td>
-                        <td>
-                          {Moment(timeLog.exit_time).format('HH:mm:ss ')}
-                          <br />
-                          {Moment(timeLog.exit_time).format('DD MMM yy ')}
-                        </td>
-                        <td>{(timeLog.work_type == "at_office") ? "Personado" : "Teletrabajado"}</td>
-                        {adminPresent && (
-                          <>
-                            <td>{timeLog.user.name}</td>
-                            <td>{timeLog.altered ? "Sí" : "No"}</td>
-                          </>
-                        )}
-                        <td>
-                          {console.log(duration)}
-                          {duration.days() > 0 ? `${duration.days()}d   :   ` : ""}{duration.hours()}h   :   {duration.minutes()}m
-                        </td>
-                        {!adminPresent && (
-                          <td>
-                            <Link href={route('timeLog.edit', timeLog.id)} className="text-blue-500">Editar</Link>
-                          </td>
+                            )}
+                            <td></td>
 
-                        )}
-                        <td></td>
+                          </tr>
+                        )
+                        break;
+                      default:
+                        duration = calcDuration(timeLog);
+                        return (
+                          <tr key={timeLog.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-md">
+                            <th className="px-1 py-1 text-center content-center  rounded-lg">{timeLog.id}</th>
+                            <td className={"px-3 py-2 text-md text-center " + isToday(entry_time)}>
+                              {entry_time.format('HH:mm:ss ')}
+                              <br />
+                              {entry_time.format('DD MMM yy ')}
 
-                      </tr>
-                    )
+                            </td>
+                            <td className={"px-3 py-2 text-md text-center " + isToday(exit_time)}>
+                              {exit_time.format('HH:mm:ss ')}
+                              <br />
+                              {exit_time.format('DD MMM yy ')}
+                            </td>
+                            <td className="px-3 py-2 text-md text-center" >{(timeLog.work_type == "at_office") ? "Personado" : "Teletrabajado"}</td>
+                            {adminPresent && (
+                              <>
+                                <td className="px-3 py-2 text-md text-center" >{timeLog.user.name} ({timeLog.user.email})</td>
+                                <td className="px-3 py-2 text-md text-center">{timeLog.altered ? "Sí" : "No"}</td>
+                              </>
+                            )}
+                            <td className="px-3 py-2 text-md text-center">
+                              {duration.days() > 0 ? `${duration.days()}d   :   ` : ""}{duration.hours()}h   :   {duration.minutes()}m
+                            </td>
+                            {!adminPresent && (
+                              <td className="px-3 py-2 text-md text-center">
+                                <Link href={route('timeLog.edit', timeLog.id)} className="text-yellow-800 bg-yellow-200 dark:text-yellow-200 dark:bg-yellow-800 mx-1 py-1 px-4 hover:shadow-md rounded-md">Editar</Link>
+                                <br />
+                                <button
+                                  onClick={() => deleteTask(task)}
+                                  className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
+                                >
+                                  Eliminar
+                                </button>
+                              </td>
+
+                            )}
+                            <td></td>
+
+                          </tr>
+                        )
+                    }
+
+
                   })}
 
                 </tbody>
               </table>
+              {timeLogs.links && (
+                <Pagination pagLinks={timeLogs} activeParam={queryString}>
+                </Pagination>
+              )}
             </div>
           </div>
         </div>
       </div>
-
 
 
 

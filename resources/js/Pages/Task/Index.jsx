@@ -266,7 +266,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                         </Link>}
                                                         {(task.createdBy.id == auth.user.id || auth.user.role == 'admin') && (<button
                                                             onClick={() => deleteTask(task)}
-                                                            className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
+                                                            className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px- hover:shadow-md rounded-md"
                                                         >
                                                             Eliminar
                                                         </button>)}
