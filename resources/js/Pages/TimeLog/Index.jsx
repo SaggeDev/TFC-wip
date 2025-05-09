@@ -35,8 +35,7 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
   const calcDurationfromNow = (timeLog) => {//Sugerencia de Pablo Miguel Ferrer
     const start = Moment(timeLog.entry_time, 'YYYY-MM-DD HH:mm:ss');
     const end = Moment(Moment(), 'YYYY-MM-DD HH:mm:ss');
-    start.add(4, 'days');
-    end.add(4, 'days');
+    start.add(2, 'hours'); //Por el utc de España
     const duration = Moment.duration(end.diff(start));
     return duration;
   };
