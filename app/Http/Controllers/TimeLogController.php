@@ -150,6 +150,10 @@ class TimeLogController extends Controller
      */
     public function destroy(TimeLog $timeLog)
     {
-        //
+        
+        $timeLog->delete();
+        
+        return to_route('timeLog.index')
+            ->with('success', "El registro ha sido eliminado exitosamente ");
     }
 }

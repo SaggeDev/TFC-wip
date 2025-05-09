@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import { TASK_STATUS_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_PRIORITY_CLASS_MAP } from "@/constants.jsx";
 import ResetButton from "@/Pages/Task/ResetButton";
 import ConfirmationAlert from "@/Components/ConfirmationAlert"
-import { Button } from "@mui/material";
 
 
 export default function Index({ tasks, queryParams = null, success, auth }) {//Cada que llame a este componente, voy a tener que mandarle la lista de tareas
@@ -266,7 +265,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                         </Link>}
                                                         {(task.createdBy.id == auth.user.id || auth.user.role == 'admin') && (<button
                                                             onClick={() => deleteTask(task)}
-                                                            className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px- hover:shadow-md rounded-md"
+                                                            className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
                                                         >
                                                             Eliminar
                                                         </button>)}
