@@ -94,7 +94,6 @@ class TaskController extends Controller
     {
         
         $data = $request->validated();
-        // dd($request);
         /** @var $image \Illuminate\Http\UploadedFile */
         $image = $data['image'] ?? null;
         $data['created_by'] = Auth::id();

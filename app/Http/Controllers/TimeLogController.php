@@ -118,7 +118,7 @@ class TimeLogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //TODO: Sacarlo directamente del arduino
     }
 
     /**
@@ -141,8 +141,17 @@ class TimeLogController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, TimeLog $timeLog)
+    //TODO: Probar
     {
-        //
+        $name=$timeLog->name;
+        $data = $request->validated();
+        $data['updated_by'] = Auth::id();
+        $data['altered'] = 1;
+       
+        $timeLog->update($data);
+
+        return to_route('timeLog.index')
+            ->with('success', "El registro de id:"+$timeLog->id+" ha sido modificado con éxito");
     }
 
     /**
@@ -150,10 +159,9 @@ class TimeLogController extends Controller
      */
     public function destroy(TimeLog $timeLog)
     {
-        
+        $id=$timeLog->id;
         $timeLog->delete();
-        
         return to_route('timeLog.index')
-            ->with('success', "El registro ha sido eliminado exitosamente ");
+            ->with('success', "El registro de id:"+$id+" ha sido eliminado exitosamente ");
     }
 }
