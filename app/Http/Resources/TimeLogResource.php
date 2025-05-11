@@ -19,9 +19,8 @@ class TimeLogResource extends JsonResource
       'id' => $this->id,
       'user_id' => $this->user_id,
       'UserID' => new UserResource($this->user),//Si falla el ardino o algo, es por esto
-      'start_time' => $this->start_time,
-      'end_time' => $this->end_time,
-      'duration' => $this->duration,
+      'entry_time' => $this->entry_time,
+      'exit_time' => $this->exit_time,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];

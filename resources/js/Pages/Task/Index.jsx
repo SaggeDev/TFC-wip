@@ -13,7 +13,6 @@ import ConfirmationAlert from "@/Components/ConfirmationAlert"
 
 export default function Index({ tasks, queryParams = null, success, auth }) {//Cada que llame a este componente, voy a tener que mandarle la lista de tareas
 
-    // console.log(success)
     const { page, ...nonPageParams } = queryParams || {};
     const queryString = new URLSearchParams(nonPageParams).toString();
     const deleteTask = (task) => {
@@ -88,8 +87,8 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md shadow sm:rounded-lg">
-                            {/* <pre>{JSON.stringify(tasks,undefined,2)}</pre> */}
+                    <div className="p-4 sm:p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md overflow-x-auto">
+                    {/* <pre>{JSON.stringify(tasks,undefined,2)}</pre> */}
                             {/*//? Esto devuelve un texto con el contenido simple, perfecto para json y revisar lo que devuelve el controlador*/}
 
                             {/*//*Display de las tareas */}
@@ -256,9 +255,7 @@ export default function Index({ tasks, queryParams = null, success, auth }) {//C
                                                     <td className="px-3 py-2">{task.due_date}</td>
 
                                                     <td className="px-3 py-2 text-center">
-                                                        {/* {console.log(task)}
-                                                        {console.log(auth.user.id)} 
-                                                        {console.log(task.createdBy.id)}  */}
+                                       
 
                                                         {(task.createdFor?.id == auth.user.id || task.createdBy.id == auth.user.id || auth.user.role == 'admin') && <Link href={route('task.edit', task.id)} className="text-yellow-700 bg-yellow-300 dark:text-yellow-300 dark:bg-yellow-700 mx-1 py-1 px-5 hover:shadow-sm rounded-md size-3 text-base">
                                                             Editar

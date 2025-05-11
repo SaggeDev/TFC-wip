@@ -14,9 +14,6 @@ import ConfirmationAlert from "@/Components/ConfirmationAlert"
 
 export default function Index({ projects, queryParams = null, success, usersOnProject, auth }) {//Cada que llame a este componente, voy a tener que mandarle la lista de proyectos
 
-    // usersOnProject.some(user => user.id === auth.user.id))
-    // console.log(usersOnProject)
-    // console.log(auth.user.id)
     const hasNoParams = Object.keys(queryParams || {}).length === 0;
     const checkParams = (hasNoParams) => {
         hasNoParams = Object.keys(queryParams || {}).length === 0;
@@ -94,8 +91,8 @@ export default function Index({ projects, queryParams = null, success, usersOnPr
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md">
-                            {/* <pre>{JSON.stringify(projects,undefined,2)}</pre> */}
+                    <div className="p-4 sm:p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md overflow-x-auto">
+                    {/* <pre>{JSON.stringify(projects,undefined,2)}</pre> */}
                             {/*//? Esto devuelve un texto con el contenido simple, perfecto para json */}
 
                             {/*//*Display de los proyectos */}

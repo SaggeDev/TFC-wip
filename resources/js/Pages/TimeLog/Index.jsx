@@ -9,11 +9,13 @@ import ConfirmationAlert from "@/Components/ConfirmationAlert"
 import Moment from 'moment';
 import { now } from "moment/moment";
 import React from 'react';
+import { useState } from "react";
+import TimeLogRegister from "@/Components/TimeLogRegister";
 
 
 
 
-export default function Index({ success, queryParams = null, timeLogs, auth }) {
+export default function Index({ success, queryParams = null, timeLogs, auth, lastTimeLog = null }) {
   const adminPresent = (auth.user.role == "admin") ? true : false;
   //? Si lo manejo con una constante condicional, gano en seguridad, comprensión lectora(por asi decirlo) y ahorro recursos
   const deleteTimeLog = (timeLog) => {
@@ -98,6 +100,16 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
     }
     router.get(route("timeLog.index"), queryParams);
   };
+  //Para poder iniciar o parar el timer
+  const startTimeLog = () => {
+    router.get(route("timeLog.startTimeLog"));
+
+  }
+  const stopTimeLog = (timeLogId) => {
+    router.get(route("timeLog.stopTimeLog"), timeLogId);
+  }
+
+  const [timeLogStarted, setTimeLogStarted] = useState(true);
 
 
   //^ Para permitir la vista distinta de admin y users, esta programado de forma que se cargan todos los registros pero se muestran solo los que tienen el user id==card[user id] por asi decirlo, si es admin, se desactiva la condición
@@ -110,18 +122,18 @@ export default function Index({ success, queryParams = null, timeLogs, auth }) {
             Horas trabajadas
           </h2>
           <br />
-          {!adminPresent && (<Link href={route('timeLog.create')} className="bg-green-600 text-white p-1 rounded-md"> Registrar horas
-          </Link>)}
+          {!adminPresent && (
+            <TimeLogRegister lastTimeLog={lastTimeLog} success={success} />)}
 
         </div>
       }
     >
       <Head title='Registros horarios' ></Head>
-      {success && <ConfirmationAlert text={success} />}
+      {(success && success != " ") && <ConfirmationAlert text={success} />}
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-            <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md">
+            <div className="p-4 sm:p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md overflow-x-auto">
               <table className="w-full text-sm text-left rtl:text-right  text-gray-500 dark:text-gray-400 ">
                 <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                   <tr className="text-nowrap dark:bg-gray-800">

@@ -66,7 +66,7 @@ export default function Index({ tasks, queryParams, project, isIn, isAdmin, isCr
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-            <div className="p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md">
+            <div className="p-4 sm:p-6 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-400 rounded-b-md overflow-x-auto">
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                   <tr className="text-nowrap dark:bg-gray-800">
@@ -220,11 +220,11 @@ export default function Index({ tasks, queryParams, project, isIn, isAdmin, isCr
                           {TASK_STATUS_TEXT_MAP[task.status]}
                         </div>
                       </td>
-                      <td className="px-4 py-2">{task.createdFor?.name?? "Nadie"}</td>
+                      <td className="px-4 py-2">{task.createdFor?.name ?? "Nadie"}</td>
                       <td className="px-4 py-2">{task.created_at}</td>
                       <td className="px-4 py-2">{task.due_date}</td>
                       <td className="px-4 py-2">
-                        {(isIn||isCreator||isAdmin)&& (
+                        {(isIn || isCreator || isAdmin) && (
                           <>
                             <Link
                               href={route("task.edit", task.id)}
@@ -232,13 +232,13 @@ export default function Index({ tasks, queryParams, project, isIn, isAdmin, isCr
                             >
                               Editar
                             </Link>
-                            {(isCreator||isAdmin)&& (
-                            <button
-                              onClick={() => deleteTask(task)}
-                              className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
-                            >
-                              Eliminar
-                            </button>
+                            {(isCreator || isAdmin) && (
+                              <button
+                                onClick={() => deleteTask(task)}
+                                className="text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 mx-1 py-1 px-4 hover:shadow-md rounded-md"
+                              >
+                                Eliminar
+                              </button>
                             )}
                             {/* Solo el admin y creador pueden borrar la tarea */}
                           </>
