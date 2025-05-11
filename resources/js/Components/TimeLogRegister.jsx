@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
-import Moment from "moment";
+import Moment from "moment"; 
 
 export default function TimeLogRegister({ lastTimeLog, success }) {
   const [duration, setDuration] = useState(Moment.duration(0));
