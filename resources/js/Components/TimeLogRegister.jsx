@@ -21,6 +21,7 @@ export default function TimeLogRegister({ lastTimeLog, success }) {
 
   switch (true) {
     default:
+    case lastTimeLog=== null:
     case success === null:
     case success?.includes("Registro guardado con éxito"):
       return (

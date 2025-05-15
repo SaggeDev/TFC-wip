@@ -299,7 +299,10 @@ export default function Index({ success, queryParams = null, timeLogs, auth, las
                           )}
                         </td>
 
-                        <td className="px-3 py-2 text-md text-center">
+                        <td className={"px-3 py-2 text-md text-center "+
+                          (timeLog.work_type === "at_office" ? "text-blue-600" : "text-orange-600")
+
+                        }>
                           {timeLog.work_type === "at_office" ? "Personado" : "Teletrabajado"}
                         </td>
 
