@@ -1,4 +1,4 @@
 # wrangler.toml
-name = 'enteev1.0'
+name = 'enteev1'
 main = "public/index.php"  
 compatibility_date = "2025-05-26"
