@@ -1,7 +1,7 @@
 
 
 
-Apunte 1: PAra el desarrollo de este proyecto se está usando colorful comments(vscode extension), por eso aparecen símbolos extrños en los comentarios(?,*,&,~....)
+Apunte 1: Para el desarrollo de este proyecto se está usando colorful comments(vscode extension), por eso aparecen símbolos extrños en los comentarios(?,*,&,~....)
 
 #Como desplegar:
 ##Hacen falta 3 terminales y el xammp(apache y phpmyadmin) para que funcione correctamente la api de arduino y la página web. Terminales:
